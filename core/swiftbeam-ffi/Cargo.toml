@@ -1,0 +1,20 @@
+[package]
+name = "swiftbeam-ffi"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "swiftbeam_ffi"
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = "=2.12.0"
+tokio = { version = "1.38", features = ["full"] }
+anyhow = "1.0"
+uuid = { version = "1.8", features = ["v4"] }
+lazy_static = "1.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+swiftbeam-core = { path = "../swiftbeam-core" }
+swiftbeam-net = { path = "../swiftbeam-net" }
+swiftbeam-crypto = { path = "../swiftbeam-crypto" }

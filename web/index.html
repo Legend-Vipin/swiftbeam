@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwiftBeam Web — Peer-to-Peer File Transfer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-glow"></div>
+  
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+      </svg>
+      <span>SwiftBeam Web</span>
+    </div>
+    <div class="subtitle">Direct Browser-to-Browser File Transfer</div>
+  </header>
+
+  <main class="container">
+    <!-- Connection Setup Panel -->
+    <section class="card glass connection-panel" id="connection-section">
+      <h2>1. Establish P2P Connection</h2>
+      <p class="description">Scan QR codes to connect instantly without typing.</p>
+      
+      <div class="role-selector">
+        <button class="btn btn-primary active" id="btn-role-sender">I want to Send</button>
+        <button class="btn btn-secondary" id="btn-role-receiver">I want to Receive</button>
+      </div>
+
+      <!-- Sender Flow -->
+      <div class="flow-container" id="sender-flow">
+        <div class="step" id="step-sender-init">
+          <span class="step-badge">A</span>
+          <p>Click below to generate a secure QR invitation for the receiver.</p>
+          <button class="btn btn-accent" id="btn-gen-offer">Generate Invitation</button>
+        </div>
+        
+        <div class="qr-container hidden" id="sender-qr-box">
+          <h3>Scan this with Receiver's Phone</h3>
+          <div id="sender-qrcode" class="qrcode-display"></div>
+          <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Or share this link:</p>
+          <div class="input-with-btn">
+            <input type="text" id="txt-invite-link" readonly />
+            <button class="btn btn-icon" id="btn-copy-link" title="Copy link">Copy</button>
+          </div>
+          <details style="margin-top: 10px;">
+            <summary style="cursor: pointer; opacity: 0.7; font-size: 0.85em;">Advanced: Show raw code</summary>
+            <textarea id="txt-offer" readonly style="margin-top: 5px;"></textarea>
+          </details>
+        </div>
+
+        <div class="step hidden" id="step-sender-answer">
+          <span class="step-badge">B</span>
+          <p>Scan the Receiver's response QR code:</p>
+          <button class="btn btn-accent" id="btn-scan-answer">Scan Response QR</button>
+          <div id="scanner-container" style="margin-top:10px;"></div>
+          
+          <details style="margin-top: 10px;">
+            <summary style="cursor: pointer; opacity: 0.7; font-size: 0.85em;">Advanced: Paste raw code manually</summary>
+            <div class="input-with-btn" style="margin-top: 5px;">
+              <textarea id="txt-answer-paste" placeholder="Paste response code here..."></textarea>
+              <button class="btn btn-primary" id="btn-connect-sender">Connect</button>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Receiver Flow -->
+      <div class="flow-container hidden" id="receiver-flow">
+        <div class="step" id="step-receiver-init">
+          <span class="step-badge">A</span>
+          <p>Ask the sender to generate an invitation, then scan it with your phone's camera, or paste the link/code below:</p>
+          <textarea id="txt-offer-paste" placeholder="Paste link or code here..."></textarea>
+          <button class="btn btn-accent" id="btn-accept-offer">Accept Invitation</button>
+        </div>
+        
+        <div class="qr-container hidden" id="step-receiver-answer">
+          <span class="step-badge">B</span>
+          <h3>Scan this with Sender's Laptop</h3>
+          <p>Point the sender's webcam at this QR code to connect!</p>
+          <div id="receiver-qrcode" class="qrcode-display"></div>
+          
+          <details style="margin-top: 10px;">
+            <summary style="cursor: pointer; opacity: 0.7; font-size: 0.85em;">Advanced: Show raw code</summary>
+            <div class="input-with-btn" style="margin-top: 5px;">
+              <textarea id="txt-answer" readonly placeholder="Generating response..."></textarea>
+              <button class="btn btn-icon" id="btn-copy-answer" title="Copy response">Copy</button>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- File Transfer Panel -->
+    <section class="card glass transfer-panel hidden" id="transfer-section">
+      <div class="status-header">
+        <div class="status-indicator">
+          <span class="status-dot pulsing" id="status-dot"></span>
+          <span id="status-text">Connecting...</span>
+        </div>
+        <button class="btn btn-outline" id="btn-disconnect">Disconnect</button>
+      </div>
+
+      <!-- Send File Module -->
+      <div id="send-module" class="hidden">
+        <div class="drop-zone" id="drop-zone">
+          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <p>Drag & drop your file here, or <span class="highlight">browse</span></p>
+          <input type="file" id="file-input" class="hidden">
+        </div>
+      </div>
+
+      <!-- Active Progress Module -->
+      <div id="progress-module" class="hidden">
+        <div class="file-info-header">
+          <div class="file-details">
+            <h3 id="lbl-file-name">filename.zip</h3>
+            <span id="lbl-file-size">124 MB</span>
+          </div>
+          <div class="percent-badge" id="lbl-percentage">0%</div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="transfer-stats">
+          <div class="stat-item">
+            <span class="stat-label">Speed</span>
+            <span class="stat-value" id="lbl-speed">-- MB/s</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Time Remaining</span>
+            <span class="stat-value" id="lbl-eta">--:--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completion/State Logs -->
+      <div class="transfer-logs">
+        <h4>Log Console</h4>
+        <div class="log-output" id="log-output">
+          <div class="log-entry system">System initialized. Waiting for connection...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Secure, encrypted, serverless transfers. Files never touch any server.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+# SwiftBeam - Cross-Platform P2P File Transfer Monorepo .gitignore
+# GitHub Official Standard Template for Rust + Flutter/Dart + Android/iOS/Desktop
+
+# ==============================================================================
+# Build & Distribution Artifacts
+# ==============================================================================
+/dist/
+dist/
+build/
+**/build/
+*.apk
+*.aab
+*.ipa
+*.dmg
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+*.exe
+*.dll
+*.so
+*.dylib
+
+# ==============================================================================
+# Rust / Cargo
+# ==============================================================================
+/core/target/
+**/target/
+**/*.rs.bk
+
+# ==============================================================================
+# Flutter / Dart / Pub
+# ==============================================================================
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+**/doc/api/
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/macOS/Flutter/ephemeral/
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
+
+# ==============================================================================
+# Android
+# ==============================================================================
+**/android/.gradle/
+**/android/local.properties
+**/android/app/src/main/assets/flutter_assets/
+**/android/**/GeneratedPluginRegistrant.java
+*.flat
+*.dex
+
+# ==============================================================================
+# iOS & macOS
+# ==============================================================================
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/**/*.modulemap
+**/macOS/Pods/
+DerivedData/
+
+# ==============================================================================
+# Python & Tooling (CorePy)
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ==============================================================================
+# IDEs, Editors & Workspaces
+# ==============================================================================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.history/
+*.swp
+*.swo
+
+# ==============================================================================
+# Operating System Files
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ==============================================================================
+# Security & Credentials
+# ==============================================================================
+.env
+.env.*
+*.jks
+*.keystore
+*.pem
+*.crt
+*.key
+
+# ==============================================================================
+# Logs, Reports & Temporary Files
+# ==============================================================================
+*.log
+tmp/
+temp/
+tools/reports/
+**/tools/reports/
+coverage/
+**/coverage/

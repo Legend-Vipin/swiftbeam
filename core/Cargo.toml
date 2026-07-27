@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "swiftbeam-core",
+    "swiftbeam-crypto",
+    "swiftbeam-net",
+    "swiftbeam-ffi"
+]
+resolver = "2"
