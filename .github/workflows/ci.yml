@@ -30,7 +30,24 @@ jobs:
         with:
           components: rustfmt, clippy
 
-      - name: Setup Flutter (stable)
+      - name: Add Cargo bin to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Cache cargo flutter_rust_bridge_codegen
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/
+          key: ${{ runner.os }}-cargo-frb-codegen-2.12.0
+
+      - name: Install flutter_rust_bridge_codegen & set permissions
+        run: |
+          chmod +x $HOME/.cargo/bin/* 2>/dev/null || true
+          if ! command -v flutter_rust_bridge_codegen &> /dev/null; then
+            cargo install flutter_rust_bridge_codegen --version 2.12.0 --force
+          fi
+          chmod +x $HOME/.cargo/bin/* 2>/dev/null || true
+
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'

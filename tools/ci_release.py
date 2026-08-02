@@ -77,7 +77,8 @@ def print_stage_header(stage_num: int, total_stages: int, name: str):
 def run_command(cmd: list[str], cwd: Path = ROOT, check: bool = False, capture: bool = True) -> subprocess.CompletedProcess:
     """Run a shell command adhering to CorePy guidelines."""
     env = os.environ.copy()
-    cargo_bin = str(Path.home() / ".cargo" / "bin")
+    cargo_home = Path(os.environ.get("CARGO_HOME", Path.home() / ".cargo"))
+    cargo_bin = str(cargo_home / "bin")
     if cargo_bin not in env.get("PATH", ""):
         env["PATH"] = f"{cargo_bin}:{env.get('PATH', '')}"
     env["PKG_CONFIG_ALLOW_CROSS"] = "1"

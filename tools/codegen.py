@@ -15,17 +15,47 @@ MOBILE_DIR = ROOT / "apps" / "mobile"
 MOBILE_FFI_DIR = MOBILE_DIR / "lib" / "core" / "ffi"
 OBSOLETE_SRC_RUST = MOBILE_DIR / "lib" / "src" / "rust"
 
-# Ensure ~/.cargo/bin is in PATH
-CARGO_BIN = str(Path.home() / ".cargo" / "bin")
-if CARGO_BIN not in os.environ.get("PATH", ""):
-    os.environ["PATH"] = f"{CARGO_BIN}:{os.environ.get('PATH', '')}"
+# Ensure ~/.cargo/bin (or $CARGO_HOME/bin) is in PATH
+CARGO_HOME = Path(os.environ.get("CARGO_HOME", Path.home() / ".cargo"))
+CARGO_BIN = CARGO_HOME / "bin"
+CARGO_BIN_STR = str(CARGO_BIN)
+
+if CARGO_BIN_STR not in os.environ.get("PATH", ""):
+    os.environ["PATH"] = f"{CARGO_BIN_STR}:{os.environ.get('PATH', '')}"
+
+
+def get_codegen_bin_path() -> str:
+    """Find executable path for flutter_rust_bridge_codegen."""
+    which_path = shutil.which("flutter_rust_bridge_codegen")
+    if which_path:
+        return which_path
+
+    frb_bin = CARGO_BIN / "flutter_rust_bridge_codegen"
+    if frb_bin.exists():
+        try:
+            frb_bin.chmod(0o755)
+        except Exception:
+            pass
+        return str(frb_bin)
+
+    return "flutter_rust_bridge_codegen"
 
 
 def ensure_codegen_installed():
-    if shutil.which("flutter_rust_bridge_codegen") is None:
-        print("⚡ flutter_rust_bridge_codegen not found in PATH. Installing version 2.12.0 via cargo...")
+    """Ensure flutter_rust_bridge_codegen is present and executable."""
+    if CARGO_BIN.exists():
+        for item in CARGO_BIN.iterdir():
+            if item.is_file() and not os.access(item, os.X_OK):
+                try:
+                    item.chmod(item.stat().st_mode | 0o111)
+                except Exception:
+                    pass
+
+    frb_bin = CARGO_BIN / "flutter_rust_bridge_codegen"
+    if shutil.which("flutter_rust_bridge_codegen") is None and not frb_bin.exists():
+        print("⚡ flutter_rust_bridge_codegen not found. Installing version 2.12.0 via cargo...")
         subprocess.run(
-            ["cargo", "install", "flutter_rust_bridge_codegen", "--version", "2.12.0"],
+            ["cargo", "install", "flutter_rust_bridge_codegen", "--version", "2.12.0", "--force"],
             check=True,
         )
 
@@ -34,9 +64,10 @@ def main():
     print("⚡  Running flutter_rust_bridge_codegen...")
     try:
         ensure_codegen_installed()
+        bin_path = get_codegen_bin_path()
         # Run codegen from apps/mobile where flutter_rust_bridge.yaml is defined
         subprocess.run(
-            ["flutter_rust_bridge_codegen", "generate"],
+            [bin_path, "generate"],
             cwd=MOBILE_DIR,
             check=True,
         )
