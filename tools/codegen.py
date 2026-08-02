@@ -4,6 +4,7 @@ SwiftBeam FFI Codegen Helper (swiftbeam-tooling)
 Runs flutter_rust_bridge_codegen generate to bridge Rust and Flutter APIs using apps/mobile/flutter_rust_bridge.yaml.
 """
 
+import os
 import shutil
 import subprocess
 import sys
@@ -14,10 +15,25 @@ MOBILE_DIR = ROOT / "apps" / "mobile"
 MOBILE_FFI_DIR = MOBILE_DIR / "lib" / "core" / "ffi"
 OBSOLETE_SRC_RUST = MOBILE_DIR / "lib" / "src" / "rust"
 
+# Ensure ~/.cargo/bin is in PATH
+CARGO_BIN = str(Path.home() / ".cargo" / "bin")
+if CARGO_BIN not in os.environ.get("PATH", ""):
+    os.environ["PATH"] = f"{CARGO_BIN}:{os.environ.get('PATH', '')}"
+
+
+def ensure_codegen_installed():
+    if shutil.which("flutter_rust_bridge_codegen") is None:
+        print("⚡ flutter_rust_bridge_codegen not found in PATH. Installing version 2.12.0 via cargo...")
+        subprocess.run(
+            ["cargo", "install", "flutter_rust_bridge_codegen", "--version", "2.12.0"],
+            check=True,
+        )
+
 
 def main():
     print("⚡  Running flutter_rust_bridge_codegen...")
     try:
+        ensure_codegen_installed()
         # Run codegen from apps/mobile where flutter_rust_bridge.yaml is defined
         subprocess.run(
             ["flutter_rust_bridge_codegen", "generate"],

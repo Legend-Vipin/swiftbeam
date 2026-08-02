@@ -30,6 +30,19 @@ fi
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="SwiftBeam Git Hook Installer")
+    parser.add_argument("--uninstall", action="store_true", help="Remove pre-commit hook")
+    args = parser.parse_args()
+
+    if args.uninstall:
+        if PRE_COMMIT_HOOK.exists():
+            PRE_COMMIT_HOOK.unlink()
+            print("🗑️  Git pre-commit hook removed successfully.")
+        else:
+            print("ℹ️  No pre-commit hook found to remove.")
+        return
+
     if not GIT_HOOKS_DIR.exists():
         print(f"❌ Error: .git/hooks directory not found at {GIT_HOOKS_DIR}", file=sys.stderr)
         sys.exit(1)

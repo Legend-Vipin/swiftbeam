@@ -77,6 +77,9 @@ def print_stage_header(stage_num: int, total_stages: int, name: str):
 def run_command(cmd: list[str], cwd: Path = ROOT, check: bool = False, capture: bool = True) -> subprocess.CompletedProcess:
     """Run a shell command adhering to CorePy guidelines."""
     env = os.environ.copy()
+    cargo_bin = str(Path.home() / ".cargo" / "bin")
+    if cargo_bin not in env.get("PATH", ""):
+        env["PATH"] = f"{cargo_bin}:{env.get('PATH', '')}"
     env["PKG_CONFIG_ALLOW_CROSS"] = "1"
     ninja_path = shutil.which("ninja") or shutil.which("ninja-build")
     if ninja_path:
@@ -224,6 +227,9 @@ def run_ci(args) -> bool:
 
     # Flutter stages
     if not args.rust_only:
+        # Ensure dependencies are fetched and package_config.json is up-to-date
+        run_command(["flutter", "pub", "get"], cwd=MOBILE_DIR)
+
         stages.extend([
             {
                 "id": "flutter-fmt",

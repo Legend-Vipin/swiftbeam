@@ -30,7 +30,7 @@ jobs:
         with:
           components: rustfmt, clippy
 
-      - name: Setup Flutter
+      - name: Setup Flutter (stable)
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
@@ -40,6 +40,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libdbus-1-dev pkg-config clang cmake libgtk-3-dev dpkg-dev
+
+      - name: Install Flutter packages
+        run: |
+          cd apps/mobile && flutter pub get
 
       - name: Run Full CI via Python Tooling Layer
         run: python3 tools/ci.py

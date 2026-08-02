@@ -152,8 +152,7 @@ def collect_apk(version: str) -> Path:
 def run_codegen():
     print("🛠️  Running FFI Codegen...")
     subprocess.run(
-        ["flutter_rust_bridge_codegen", "generate"],
-        cwd=MOBILE,
+        [sys.executable, str(ROOT / "tools" / "codegen.py")],
         check=True,
     )
     print("✅  FFI Codegen complete.")

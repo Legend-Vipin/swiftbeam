@@ -354,7 +354,7 @@ def main():
         run_rust_tests()
         
     print("🛠️  Running FFI Codegen...")
-    run_cmd(["flutter_rust_bridge_codegen", "generate"], cwd=MOBILE)
+    run_cmd([sys.executable, str(ROOT / "tools" / "codegen.py")])
     print("✅  FFI Codegen complete.")
 
     compile_rust_release_library()

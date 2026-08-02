@@ -9,6 +9,11 @@ on:
 permissions:
   contents: write
 
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  PKG_CONFIG_ALLOW_CROSS: "1"
+
 jobs:
   build-and-release:
     name: Build & Publish Release
@@ -24,11 +29,31 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Rust (stable)
+      - name: Setup Rust (stable) with Android targets
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android
+          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+          components: rustfmt, clippy
 
+      - name: Add Cargo bin to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Cache Cargo binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/
+          key: ${{ runner.os }}-cargo-tools-v1
+
+      - name: Install FFI Codegen & NDK linking tools
+        run: |
+          chmod +x $HOME/.cargo/bin/* 2>/dev/null || true
+          if ! command -v flutter_rust_bridge_codegen &> /dev/null; then
+            cargo install flutter_rust_bridge_codegen --version 2.12.0 --force
+          fi
+          if ! command -v cargo-ndk &> /dev/null; then
+            cargo install cargo-ndk
+          fi
+          chmod +x $HOME/.cargo/bin/* 2>/dev/null || true
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -40,8 +65,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libdbus-1-dev pkg-config clang cmake libgtk-3-dev dpkg-dev
 
+      - name: Install Flutter packages & link dependencies
+        run: |
+          cd apps/mobile && flutter pub get
+
+      - name: Run FFI Codegen verification & binding
+        run: |
+          python3 tools/codegen.py
+
       - name: Run Release via Python Tooling Layer
-        run: python3 tools/release.py --version "${GITHUB_REF#refs/tags/}" --skip-ci
+        run: |
+          python3 tools/release.py --version "${GITHUB_REF#refs/tags/}" --skip-ci
 
       - name: Publish GitHub Release & Upload Assets
         uses: softprops/action-gh-release@v2
