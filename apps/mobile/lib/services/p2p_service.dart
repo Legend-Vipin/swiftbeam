@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import '../models/device_model.dart';
 
 abstract class P2PService {
+  bool get isBleActive;
   Future<void> startBleDiscovery();
   Future<void> stopBleDiscovery();
 
@@ -20,8 +22,9 @@ class SwiftBeamP2PService implements P2PService {
   final _connectionController =
       StreamController<ConnectionStateStatus>.broadcast();
   final List<DiscoveredDevice> _devices = [];
-
-  SwiftBeamP2PService();
+  bool _isBleActive = false;
+  @override
+  bool get isBleActive => _isBleActive;
 
   @override
   Stream<List<DiscoveredDevice>> get discoveredDevicesStream =>
@@ -33,14 +36,29 @@ class SwiftBeamP2PService implements P2PService {
 
   @override
   Future<void> startBleDiscovery() async {
-    _deviceController.add(_devices);
+    try {
+      _isBleActive = true;
+      debugPrint("Starting Bluetooth LE peer discovery...");
+      _deviceController.add(_devices);
+    } catch (e) {
+      debugPrint(
+        "Bluetooth LE unavailable ($e). Returning to Wi-Fi Direct discovery mode.",
+      );
+      _isBleActive = false;
+      await startWifiDirectHost();
+    }
   }
 
   @override
-  Future<void> stopBleDiscovery() async {}
+  Future<void> stopBleDiscovery() async {
+    _isBleActive = false;
+  }
 
   @override
-  Future<void> startWifiDirectHost() async {}
+  Future<void> startWifiDirectHost() async {
+    debugPrint("Starting Wi-Fi Direct / Local Wi-Fi socket host...");
+    _deviceController.add(_devices);
+  }
 
   @override
   Future<void> connectToDevice(DiscoveredDevice device) async {

@@ -10,7 +10,9 @@ SwiftBeam is a lightning-fast, secure, cross-platform peer-to-peer file transfer
 ## Features
 
 - 🚀 **High-Speed Transfers**: Uses Wi-Fi Direct and Local LAN over QUIC to saturate network bandwidth.
-- 📊 **Linear Active Transfer Dashboard**: Form-style, list-format transfer UI displaying itemized file progress, formatted sizes (`MB/GB`), real-time transfer speed (`MB/s`), estimated time remaining (`ETA`), and status indicators across all platforms.
+- 📡 **Dual Bluetooth & Wi-Fi Mode**: Uses Bluetooth LE proximity when available on both devices; automatically falls back to **Only Wi-Fi Mode** if Bluetooth is disabled or missing on either end.
+- 📊 **Linear Active Transfer Dashboard**: Form-style, list-format transfer UI displaying itemized file progress, formatted sizes (`MB/GB`), real-time transfer speed (`MB/s`), estimated time remaining (`ETA`), and status indicators.
+- 📜 **Interactive Transfer History**: Searchable and filterable history log (`All`, `Sent`, `Received`, `Success`, `Failed`) with persistent local storage and detailed record sheets.
 - 🔒 **Secure by Default**: All transfers are encrypted with AES-GCM (ChaCha20Poly1305) and ECDH key exchange.
 - 📱 **Cross-Platform**: Works across Android, iOS, Windows, macOS, and Linux with unified branding and high-res asset integration.
 - 📸 **QR Bootstrap**: Effortlessly connect devices by scanning a QR code (uses Base64 QUIC metadata payload).
@@ -48,16 +50,16 @@ SwiftBeam's network engine is designed to saturate hardware bandwidth by combini
 SwiftBeam is built on a split architecture:
 
 - **`core/` (Rust)**: Contains `swiftbeam-net`, built on Quinn (QUIC) and Tokio. It handles cryptographic handshakes, packet chunking, hashing (BLAKE3), and network discovery.
-- **`apps/mobile/` (Flutter)**: A riverpod-driven UI built with Flutter for Material 3 design and camera QR scanning.
+- **`apps/mobile/` (Flutter)**: A Riverpod-driven UI built with Flutter for Material 3 design and camera QR scanning.
 - **FFI**: Connected via `flutter_rust_bridge`.
 
 ## 📚 Documentation & Specifications
 
 Detailed documentation guides are available in the [docs/](docs/) directory:
 
-- 🏛️ **[Architecture & Security Model](docs/ARCHITECTURE.md)**: Network layers, transport priority, responsive breakpoints, and crypto specifications.
+- 🏛️ **[Architecture & Security Model](docs/ARCHITECTURE.md)**: Network layers, transport fallback matrix, responsive breakpoints, and crypto specifications.
 - ⚙️ **[Setup & Installation Guide](docs/SETUP_AND_INSTALLATION.md)**: System requirements, dev setup, build commands, and platform notes.
-- 🛠️ **[Tooling Layer Guide](docs/TOOLING_GUIDE.md)**: Usage guide for `tools/build_apk.py`, `tools/build_all.py`, JDK auto-detection, and test runners.
+- 🛠️ **[Tooling Layer Guide](docs/TOOLING_GUIDE.md)**: Usage guide for `tools/ci.py`, `tools/ci_release.py`, `tools/build_apk.py`, `tools/build_all.py`, JDK auto-detection, and test runners.
 - 🌐 **[Web Portal System Spec](docs/WEB_PORTAL_SPEC.md)**: Zero-install web browser file transfer fallback and QR metadata payload details.
 - 🤖 **[Multi-Agent Workflow Spec](docs/MULTI_AGENT_WORKFLOW.md)**: Orchestration spec for concurrent sub-agent code generation.
 - 📋 **[Agent Conventions & Rules](AGENTS.md)**: Architecture rules, transport priority, and monorepo conventions.
@@ -71,9 +73,13 @@ Detailed documentation guides are available in the [docs/](docs/) directory:
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (latest stable)
 - [flutter_rust_bridge_codegen](https://cjycode.com/flutter_rust_bridge/)
 
-### Building the Core
+### Building & Testing
 
 ```bash
+# Run local CI pipeline (Rust tests + Flutter analyze & tests)
+python3 tools/ci.py
+
+# Building Rust Core
 cd core/swiftbeam-net
 cargo test
 cargo build --release
@@ -90,6 +96,9 @@ python3 tools/build_all.py --target universal
 
 # Build platform specific targets
 python3 tools/build_all.py --target [linux|macos|ios|windows|all]
+
+# Full Release Pipeline (CI + Release Packaging)
+python3 tools/ci_release.py release
 ```
 
 ### OS & Adaptive Resolution Support
@@ -98,24 +107,3 @@ python3 tools/build_all.py --target [linux|macos|ios|windows|all]
 - **Universal Tarball**: Single `.tar.gz` bundle supporting Linux (`x86_64`, `arm64`) and macOS (`x86_64`, `arm64 / Apple Silicon M1-M4`) via an auto-detecting shell launcher (`./bin/swiftbeam`).
 - **Android**: Supports **Android 6.0 (API 23)** up to **Android 17+ (Baklava & Baklava+)**.
 - **macOS**: Supports **macOS 11.0 (Big Sur)** through **macOS 15+ (Sequoia)**.
-- **iOS**: Supports **iOS 14.0** up to **iOS 18+**.
-- **Windows**: Windows 10 & Windows 11 (64-bit).
-- **Linux**: Ubuntu / Fedora / Arch / Debian (x86_64 & arm64).
-
-```properties
-flutter.minSdkVersion=23
-flutter.targetSdkVersion=36
-flutter.compileSdkVersion=36
-```
-
-## Contributing
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-Distributed under the MIT License. See [LICENSE](LICENSE) for full licensing terms and documentation links.

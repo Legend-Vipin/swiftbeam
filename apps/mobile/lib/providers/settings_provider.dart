@@ -39,10 +39,12 @@ class DeviceSettings {
 
 class DeviceSettingsNotifier extends StateNotifier<DeviceSettings> {
   DeviceSettingsNotifier()
-      : super(DeviceSettings(
-          deviceName: DeviceIdentityService.getSyncFallbackDeviceName(),
-          realDeviceName: DeviceIdentityService.getSyncFallbackDeviceName(),
-        )) {
+      : super(
+          DeviceSettings(
+            deviceName: DeviceIdentityService.getSyncFallbackDeviceName(),
+            realDeviceName: DeviceIdentityService.getSyncFallbackDeviceName(),
+          ),
+        ) {
     _initDeviceIdentity();
   }
 
@@ -70,10 +72,7 @@ class DeviceSettingsNotifier extends StateNotifier<DeviceSettings> {
 
   Future<void> resetToRealName() async {
     final realName = await DeviceIdentityService.resetToRealDeviceName();
-    state = state.copyWith(
-      deviceName: realName,
-      isCustomName: false,
-    );
+    state = state.copyWith(deviceName: realName, isCustomName: false);
   }
 
   void toggleAutoAccept(bool value) {

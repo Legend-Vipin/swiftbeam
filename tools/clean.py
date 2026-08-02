@@ -53,6 +53,21 @@ def clean_flutter():
     for p in extra_paths:
         remove_path(p)
 
+    cargokit_deps_dir = (
+        MOBILE_DIR
+        / "build"
+        / "linux"
+        / "x64"
+        / "release"
+        / "plugins"
+        / "rust_lib_swiftbeam"
+        / "cargokit_build"
+        / "x86_64-unknown-linux-gnu"
+        / "release"
+        / "deps"
+    )
+    cargokit_deps_dir.mkdir(parents=True, exist_ok=True)
+
 
 def clean_rust():
     """Clean Rust target directories."""

@@ -107,25 +107,28 @@ class PeerDiscoveryNotifier extends StateNotifier<List<DiscoveredPeer>> {
 
     try {
       final ffiStream = startDiscovery();
-      ffiStream.listen((eventJson) {
-        try {
-          final Map<String, dynamic> event = jsonDecode(eventJson);
-          final type = event['type'];
-          if (type == 'PeerFound') {
-            final peer = DiscoveredPeer.fromJson(event);
-            if (!state.any((p) => p.peerId == peer.peerId)) {
-              state = [...state, peer];
+      ffiStream.listen(
+        (eventJson) {
+          try {
+            final Map<String, dynamic> event = jsonDecode(eventJson);
+            final type = event['type'];
+            if (type == 'PeerFound') {
+              final peer = DiscoveredPeer.fromJson(event);
+              if (!state.any((p) => p.peerId == peer.peerId)) {
+                state = [...state, peer];
+              }
+            } else if (type == 'PeerLost') {
+              final peerId = event['peer_id'] ?? '';
+              state = state.where((p) => p.peerId != peerId).toList();
             }
-          } else if (type == 'PeerLost') {
-            final peerId = event['peer_id'] ?? '';
-            state = state.where((p) => p.peerId != peerId).toList();
+          } catch (e) {
+            debugPrint("mDNS parse error: $e");
           }
-        } catch (e) {
-          debugPrint("mDNS parse error: $e");
-        }
-      }, onError: (err) {
-        debugPrint("mDNS stream error: $err");
-      });
+        },
+        onError: (err) {
+          debugPrint("mDNS stream error: $err");
+        },
+      );
     } catch (e) {
       debugPrint("startDiscovery error: $e");
     }
@@ -149,14 +152,15 @@ class TransferListNotifier
   TransferListNotifier(this._ref) : super({});
 
   void addTransfer(TransferProgress progress) {
-    state = {
-      ...state,
-      progress.transferId: progress,
-    };
+    state = {...state, progress.transferId: progress};
   }
 
   void updateProgress(
-      String transferId, int bytesTransferred, int speedBps, int etaSeconds) {
+    String transferId,
+    int bytesTransferred,
+    int speedBps,
+    int etaSeconds,
+  ) {
     final current = state[transferId];
     if (current != null) {
       state = {
@@ -181,10 +185,7 @@ class TransferListNotifier
         status: 'completed',
       );
 
-      state = {
-        ...state,
-        transferId: updated,
-      };
+      state = {...state, transferId: updated};
 
       // Automatically save completed transfer to persistent history
       _ref.read(historyProvider.notifier).addRecord(
@@ -204,15 +205,9 @@ class TransferListNotifier
   void failTransfer(String transferId, String error) {
     final current = state[transferId];
     if (current != null) {
-      final updated = current.copyWith(
-        status: 'failed',
-        error: error,
-      );
+      final updated = current.copyWith(status: 'failed', error: error);
 
-      state = {
-        ...state,
-        transferId: updated,
-      };
+      state = {...state, transferId: updated};
 
       // Automatically save failed transfer to persistent history
       _ref.read(historyProvider.notifier).addRecord(
@@ -234,10 +229,7 @@ class TransferListNotifier
     if (current != null) {
       state = {
         ...state,
-        transferId: current.copyWith(
-          status: 'paused',
-          isPaused: true,
-        ),
+        transferId: current.copyWith(status: 'paused', isPaused: true),
       };
     }
   }
@@ -247,10 +239,7 @@ class TransferListNotifier
     if (current != null) {
       state = {
         ...state,
-        transferId: current.copyWith(
-          status: 'progressing',
-          isPaused: false,
-        ),
+        transferId: current.copyWith(status: 'progressing', isPaused: false),
       };
     }
   }
@@ -258,12 +247,7 @@ class TransferListNotifier
   void cancelTransfer(String transferId) {
     final current = state[transferId];
     if (current != null) {
-      state = {
-        ...state,
-        transferId: current.copyWith(
-          status: 'cancelled',
-        ),
-      };
+      state = {...state, transferId: current.copyWith(status: 'cancelled')};
     }
   }
 
@@ -289,8 +273,10 @@ class TransferListNotifier
   }
 
   // Handle incoming FFI JSON events
-  void handleFfiEventJson(String jsonStr,
-      {TransferDirection direction = TransferDirection.receive}) {
+  void handleFfiEventJson(
+    String jsonStr, {
+    TransferDirection direction = TransferDirection.receive,
+  }) {
     try {
       final Map<String, dynamic> event = jsonDecode(jsonStr);
       final type = event['type'];
@@ -300,10 +286,13 @@ class TransferListNotifier
         final fileName = event['file_name'] ?? 'Unknown';
         final newState = Map<String, TransferProgress>.from(state);
         // Remove any temporary/optimistic transfer entries for the same file or fallback placeholder
-        newState.removeWhere((id, t) =>
-            id.startsWith('tx_') &&
-            (t.fileName == fileName || t.fileName == 'Active File Transfer') &&
-            t.bytesTransferred == 0);
+        newState.removeWhere(
+          (id, t) =>
+              id.startsWith('tx_') &&
+              (t.fileName == fileName ||
+                  t.fileName == 'Active File Transfer') &&
+              t.bytesTransferred == 0,
+        );
 
         newState[transferId] = TransferProgress(
           transferId: transferId,
@@ -318,11 +307,13 @@ class TransferListNotifier
         final current = newState[transferId];
         final fileName = current?.fileName ?? event['file_name'];
         if (fileName != null) {
-          newState.removeWhere((id, t) =>
-              id.startsWith('tx_') &&
-              (t.fileName == fileName ||
-                  t.fileName == 'Active File Transfer') &&
-              t.bytesTransferred == 0);
+          newState.removeWhere(
+            (id, t) =>
+                id.startsWith('tx_') &&
+                (t.fileName == fileName ||
+                    t.fileName == 'Active File Transfer') &&
+                t.bytesTransferred == 0,
+          );
           state = newState;
         }
 
@@ -348,7 +339,8 @@ class TransferListNotifier
 }
 
 final transferListProvider =
-    StateNotifierProvider<TransferListNotifier, Map<String, TransferProgress>>(
-        (ref) {
+    StateNotifierProvider<TransferListNotifier, Map<String, TransferProgress>>((
+  ref,
+) {
   return TransferListNotifier(ref);
 });

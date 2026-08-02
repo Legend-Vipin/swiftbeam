@@ -15,7 +15,6 @@ pub enum TransportType {
     BleAndWifiLan,
     SameWifi,
     WifiDirect,
-    Hotspot,
 }
 
 pub struct TransportManager {

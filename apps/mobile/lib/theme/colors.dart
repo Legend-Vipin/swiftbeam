@@ -17,10 +17,7 @@ class SwiftBeamColors {
   );
 
   static const LinearGradient glassGradient = LinearGradient(
-    colors: [
-      Color(0x30FFFFFF),
-      Color(0x05FFFFFF),
-    ],
+    colors: [Color(0x30FFFFFF), Color(0x05FFFFFF)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
@@ -28,11 +25,7 @@ class SwiftBeamColors {
   static const Gradient backgroundAmbientGradient = RadialGradient(
     center: Alignment(0, -0.5),
     radius: 1.2,
-    colors: [
-      Color(0x209B5CFF),
-      Color(0x1500D9FF),
-      Color(0xFF0F172A),
-    ],
+    colors: [Color(0x209B5CFF), Color(0x1500D9FF), Color(0xFF0F172A)],
     stops: [0.0, 0.4, 1.0],
   );
 }

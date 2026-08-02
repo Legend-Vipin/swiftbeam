@@ -78,6 +78,10 @@ def run_command(cmd: list[str], cwd: Path = ROOT, check: bool = False, capture: 
     """Run a shell command adhering to CorePy guidelines."""
     env = os.environ.copy()
     env["PKG_CONFIG_ALLOW_CROSS"] = "1"
+    ninja_path = shutil.which("ninja") or shutil.which("ninja-build")
+    if ninja_path:
+        env["CMAKE_MAKE_PROGRAM"] = ninja_path
+        env["NINJA"] = ninja_path
     try:
         return subprocess.run(
             cmd,

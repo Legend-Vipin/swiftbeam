@@ -62,9 +62,9 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('File picker error: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('File picker error: $e')));
       }
     }
   }
@@ -127,8 +127,10 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
   Widget build(BuildContext context) {
     final selectedList = _items.where((i) => i.isSelected).toList();
     final int selectedCount = selectedList.length;
-    final int totalBytes =
-        selectedList.fold(0, (sum, item) => sum + item.sizeBytes);
+    final int totalBytes = selectedList.fold(
+      0,
+      (sum, item) => sum + item.sizeBytes,
+    );
     final String formattedTotalSize = _formatBytes(totalBytes);
 
     return Scaffold(
@@ -146,19 +148,24 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded,
-                          color: Colors.white),
+                      icon: const Icon(
+                        Icons.arrow_back_rounded,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     const SizedBox(width: 8),
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Select Files to Send',
-                            style: SwiftBeamTypography.headlineMedium),
                         Text(
-                            'Native cross-platform file picker (Android, iOS, Web, Desktop)',
-                            style: SwiftBeamTypography.bodyMedium),
+                          'Select Files to Send',
+                          style: SwiftBeamTypography.headlineMedium,
+                        ),
+                        Text(
+                          'Native cross-platform file picker (Android, iOS, Web, Desktop)',
+                          style: SwiftBeamTypography.bodyMedium,
+                        ),
                       ],
                     ),
                   ],
@@ -169,8 +176,9 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
                 GlassContainer(
                   padding: const EdgeInsets.all(20),
                   onTap: _pickFiles,
-                  borderColor:
-                      SwiftBeamColors.primaryCyan.withValues(alpha: 0.5),
+                  borderColor: SwiftBeamColors.primaryCyan.withValues(
+                    alpha: 0.5,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -180,17 +188,24 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
                           shape: BoxShape.circle,
                           color: SwiftBeamColors.primaryCyan,
                         ),
-                        child: const Icon(Icons.file_open_rounded,
-                            color: SwiftBeamColors.background, size: 24),
+                        child: const Icon(
+                          Icons.file_open_rounded,
+                          color: SwiftBeamColors.background,
+                          size: 24,
+                        ),
                       ),
                       const SizedBox(width: 16),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Browse & Pick Files',
-                              style: SwiftBeamTypography.titleMedium),
-                          Text('Opens native system file dialog',
-                              style: SwiftBeamTypography.bodyMedium),
+                          Text(
+                            'Browse & Pick Files',
+                            style: SwiftBeamTypography.titleMedium,
+                          ),
+                          Text(
+                            'Opens native system file dialog',
+                            style: SwiftBeamTypography.bodyMedium,
+                          ),
                         ],
                       ),
                     ],
@@ -207,11 +222,16 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(Icons.folder_open_rounded,
-                                    color: Colors.white38, size: 48),
+                                Icon(
+                                  Icons.folder_open_rounded,
+                                  color: Colors.white38,
+                                  size: 48,
+                                ),
                                 SizedBox(height: 12),
-                                Text('No Files Selected',
-                                    style: SwiftBeamTypography.titleMedium),
+                                Text(
+                                  'No Files Selected',
+                                  style: SwiftBeamTypography.titleMedium,
+                                ),
                                 SizedBox(height: 4),
                                 Text(
                                   'Tap "Browse & Pick Files" above to select files from your device.',
@@ -236,8 +256,9 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
                                 });
                               },
                               borderColor: item.isSelected
-                                  ? SwiftBeamColors.primaryCyan
-                                      .withValues(alpha: 0.5)
+                                  ? SwiftBeamColors.primaryCyan.withValues(
+                                      alpha: 0.5,
+                                    )
                                   : Colors.white.withValues(alpha: 0.1),
                               child: Row(
                                 children: [
@@ -259,9 +280,11 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
                                       color: SwiftBeamColors.primaryCyan
                                           .withValues(alpha: 0.15),
                                     ),
-                                    child: Icon(item.icon,
-                                        color: SwiftBeamColors.primaryCyan,
-                                        size: 24),
+                                    child: Icon(
+                                      item.icon,
+                                      color: SwiftBeamColors.primaryCyan,
+                                      size: 24,
+                                    ),
                                   ),
                                   const SizedBox(width: 16),
                                   Expanded(
@@ -269,21 +292,26 @@ class _FilePickerScreenState extends State<FilePickerScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(item.name,
-                                            style:
-                                                SwiftBeamTypography.titleMedium,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis),
+                                        Text(
+                                          item.name,
+                                          style:
+                                              SwiftBeamTypography.titleMedium,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                         const SizedBox(height: 2),
-                                        Text(item.sizeFormatted,
-                                            style:
-                                                SwiftBeamTypography.bodyMedium),
+                                        Text(
+                                          item.sizeFormatted,
+                                          style: SwiftBeamTypography.bodyMedium,
+                                        ),
                                       ],
                                     ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.close_rounded,
-                                        color: Colors.white38),
+                                    icon: const Icon(
+                                      Icons.close_rounded,
+                                      color: Colors.white38,
+                                    ),
                                     onPressed: () {
                                       setState(() {
                                         _items.removeAt(index);

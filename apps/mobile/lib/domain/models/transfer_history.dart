@@ -49,8 +49,9 @@ class TransferHistoryRecord {
         (e) => e.name == map['status'],
         orElse: () => TransferStatus.completed,
       ),
-      timestamp:
-          DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()),
+      timestamp: DateTime.parse(
+        map['timestamp'] ?? DateTime.now().toIso8601String(),
+      ),
     );
   }
 

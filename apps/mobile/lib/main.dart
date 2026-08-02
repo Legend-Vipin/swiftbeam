@@ -27,11 +27,7 @@ Future<void> main() async {
   } catch (e) {
     debugPrint("Application startup initialization notice: $e");
   }
-  runApp(
-    const ProviderScope(
-      child: SwiftBeamApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: SwiftBeamApp()));
 }
 
 class SwiftBeamApp extends StatelessWidget {
@@ -55,15 +51,19 @@ class SwiftBeamApp extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.warning_amber_rounded,
-                          color: Colors.amber, size: 64),
+                      const Icon(
+                        Icons.warning_amber_rounded,
+                        color: Colors.amber,
+                        size: 64,
+                      ),
                       const SizedBox(height: 16),
                       const Text(
                         'Initialization Notice',
                         style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -107,9 +107,7 @@ class _SwiftBeamNavigationWrapperState
   int _selectedIndex = 0;
 
   void _navigateToScreen(Widget screen) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => screen),
-    );
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => screen));
   }
 
   @override
@@ -137,8 +135,10 @@ class _SwiftBeamNavigationWrapperState
                           final base64Payload =
                               uri.queryParameters['data'] ?? '';
                           if (base64Payload.isNotEmpty) {
-                            String normalized =
-                                base64Payload.replaceAll(' ', '+');
+                            String normalized = base64Payload.replaceAll(
+                              ' ',
+                              '+',
+                            );
                             while (normalized.length % 4 != 0) {
                               normalized += '=';
                             }
@@ -154,14 +154,19 @@ class _SwiftBeamNavigationWrapperState
                               qrJson: qrJson,
                               filePath: file.path!,
                             );
-                            ffiStream.listen((event) {
-                              ref
-                                  .read(transferListProvider.notifier)
-                                  .handleFfiEventJson(event,
-                                      direction: TransferDirection.send);
-                            }, onError: (err) {
-                              debugPrint('Transfer stream error: $err');
-                            });
+                            ffiStream.listen(
+                              (event) {
+                                ref
+                                    .read(transferListProvider.notifier)
+                                    .handleFfiEventJson(
+                                      event,
+                                      direction: TransferDirection.send,
+                                    );
+                              },
+                              onError: (err) {
+                                debugPrint('Transfer stream error: $err');
+                              },
+                            );
                           } catch (e) {
                             debugPrint('connectToQr error: $e');
                           }
@@ -174,14 +179,17 @@ class _SwiftBeamNavigationWrapperState
                             _navigateToScreen(
                               TransferCompleteScreen(
                                 onSendAgain: () {
-                                  Navigator.of(context)
-                                      .popUntil((route) => route.isFirst);
+                                  Navigator.of(
+                                    context,
+                                  ).popUntil((route) => route.isFirst);
                                 },
                                 onOpenFolder: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        content: Text(
-                                            'Opening SwiftBeam Received Folder...')),
+                                      content: Text(
+                                        'Opening SwiftBeam Received Folder...',
+                                      ),
+                                    ),
                                   );
                                 },
                               ),
@@ -205,9 +213,7 @@ class _SwiftBeamNavigationWrapperState
               onContinue: () {
                 Navigator.of(context).pop();
                 _navigateToScreen(
-                  DiscoveryScreen(
-                    onDeviceSelected: (DiscoveredDevice dev) {},
-                  ),
+                  DiscoveryScreen(onDeviceSelected: (DiscoveredDevice dev) {}),
                 );
               },
             ),
@@ -236,17 +242,24 @@ class _SwiftBeamNavigationWrapperState
                   setState(() => _selectedIndex = idx),
               backgroundColor: SwiftBeamColors.surface,
               selectedIconTheme: const IconThemeData(
-                  color: SwiftBeamColors.primaryCyan, size: 28),
-              unselectedIconTheme:
-                  const IconThemeData(color: Colors.white54, size: 24),
+                color: SwiftBeamColors.primaryCyan,
+                size: 28,
+              ),
+              unselectedIconTheme: const IconThemeData(
+                color: Colors.white54,
+                size: 24,
+              ),
               selectedLabelTextStyle: const TextStyle(
-                  color: SwiftBeamColors.primaryCyan,
-                  fontWeight: FontWeight.bold),
+                color: SwiftBeamColors.primaryCyan,
+                fontWeight: FontWeight.bold,
+              ),
               unselectedLabelTextStyle: const TextStyle(color: Colors.white54),
               extended: isDesktop,
               leading: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20.0,
+                  horizontal: 8.0,
+                ),
                 child: Column(
                   children: [
                     Row(
@@ -290,7 +303,9 @@ class _SwiftBeamNavigationWrapperState
                       Text(
                         deviceSettings.deviceName,
                         style: const TextStyle(
-                            color: Colors.white54, fontSize: 12),
+                          color: Colors.white54,
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ],
@@ -316,12 +331,12 @@ class _SwiftBeamNavigationWrapperState
               ],
             ),
             const VerticalDivider(
-                thickness: 1, width: 1, color: Colors.white10),
+              thickness: 1,
+              width: 1,
+              color: Colors.white10,
+            ),
             Expanded(
-              child: IndexedStack(
-                index: _selectedIndex,
-                children: pages,
-              ),
+              child: IndexedStack(index: _selectedIndex, children: pages),
             ),
           ],
         ),
@@ -330,16 +345,15 @@ class _SwiftBeamNavigationWrapperState
 
     // Mobile Layout with BottomNavigationBar
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: pages,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: pages),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: SwiftBeamColors.surface.withValues(alpha: 0.9),
           border: Border(
             top: BorderSide(
-                color: Colors.white.withValues(alpha: 0.1), width: 1),
+              color: Colors.white.withValues(alpha: 0.1),
+              width: 1,
+            ),
           ),
         ),
         child: BottomNavigationBar(

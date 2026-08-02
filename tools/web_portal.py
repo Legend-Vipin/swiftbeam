@@ -31,7 +31,7 @@ def get_local_ip():
         return "127.0.0.1"
 
 
-def get_network_interfaces():
+def get_network_interfaces(): # type: ignore
     interfaces = []
     try:
         ip = get_local_ip()
@@ -97,15 +97,11 @@ UNIFIED_WEB_APP_HTML = """<!DOCTYPE html>
       align-items: center;
       gap: 12px;
     }
-    .brand-logo {
+    .brand-logo-img {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #6366f1, #a855f7);
+      object-fit: contain;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
       box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
     }
     .brand-title {
@@ -309,7 +305,7 @@ UNIFIED_WEB_APP_HTML = """<!DOCTYPE html>
 <body>
   <div class="header-bar">
     <div class="brand">
-      <div class="brand-logo">⚡</div>
+      <img src="/logo.png" alt="SwiftBeam Logo" class="brand-logo-img">
       <div class="brand-title">SwiftBeam</div>
     </div>
     <div class="badge-status">
@@ -496,6 +492,37 @@ UNIFIED_WEB_APP_HTML = """<!DOCTYPE html>
 
 
 class UnifiedWebAppHandler(http.server.BaseHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+        self.send_header("Access-Control-Allow-Headers", "*")
+        super().end_headers()
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.end_headers()
+
+    def do_HEAD(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+
+        if path in ("/", "/upload", "/download"):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(UNIFIED_WEB_APP_HTML.encode("utf-8"))))
+            self.end_headers()
+        elif path in ("/logo.png", "/assets/logo.png", "/favicon.ico", "/favicon.png"):
+            self.send_response(200)
+            self.send_header("Content-Type", "image/png")
+            self.end_headers()
+        elif path == "/api/status" or path == "/api/shared":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+        else:
+            self.send_response(200)
+            self.end_headers()
+
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
@@ -505,6 +532,30 @@ class UnifiedWebAppHandler(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.end_headers()
             self.wfile.write(UNIFIED_WEB_APP_HTML.encode("utf-8"))
+
+        elif path in ("/logo.png", "/assets/logo.png", "/favicon.ico", "/favicon.png"):
+            logo_candidates = [
+                Path(__file__).parent.parent / "apps" / "mobile" / "assets" / "logo.png",
+                Path(__file__).parent.parent / "apps" / "mobile" / "web" / "favicon.png",
+                Path(__file__).parent / "assets" / "logo.png",
+                Path("apps/mobile/assets/logo.png"),
+                Path("assets/logo.png"),
+            ]
+            logo_path = None
+            for cand in logo_candidates:
+                if cand.exists():
+                    logo_path = cand
+                    break
+
+            if logo_path:
+                self.send_response(200)
+                self.send_header("Content-Type", "image/png")
+                self.send_header("Content-Length", str(logo_path.stat().st_size))
+                self.end_headers()
+                with open(logo_path, "rb") as f:
+                    self.wfile.write(f.read())
+            else:
+                self.send_error(404, "Logo Not Found")
 
         elif path == "/api/status":
             ip = get_local_ip()
@@ -581,8 +632,13 @@ class UnifiedWebAppHandler(http.server.BaseHTTPRequestHandler):
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="SwiftBeam Standalone Web Portal")
+    parser.add_argument("--port", type=int, default=PORT, help="Port to listen on")
+    args = parser.parse_args()
+
     ip = get_local_ip()
-    port = PORT
+    port = args.port
     server_address = ("0.0.0.0", port)
 
     try:

@@ -6,9 +6,11 @@ description: Senior Rust transfer engine guidelines, async I/O, memory mapping, 
 # Skill: Rust Transfer Engine
 
 ## Role
+
 You are a senior Rust systems engineer specializing in async I/O and networking.
 
 ## Rules
+
 1. Use memmap2 for all file reads — never std::fs::read for large files
 2. Hash every chunk with blake3::hash() immediately after reading
 3. Use rayon::par_iter() for manifest generation (CPU-bound)

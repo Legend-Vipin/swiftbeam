@@ -37,15 +37,16 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
   final List<PermissionItem> _permissions = [
     PermissionItem(
       id: 'wifi',
-      title: 'Wi-Fi & Direct',
-      subtitle: 'Required for high-speed local P2P transfer sockets',
+      title: 'Wi-Fi Direct & Network',
+      subtitle: 'Required for high-speed Wi-Fi Direct P2P transfer sockets',
       icon: Icons.wifi_rounded,
       isGranted: true,
     ),
     PermissionItem(
       id: 'ble',
       title: 'Bluetooth LE',
-      subtitle: 'Discovers nearby peers without manual IP configuration',
+      subtitle:
+          'Discovers nearby peers; falls back to Wi-Fi Direct if unavailable',
       icon: Icons.bluetooth_rounded,
       isGranted: false,
     ),
@@ -89,13 +90,17 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded,
-                          color: Colors.white),
+                      icon: const Icon(
+                        Icons.arrow_back_rounded,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     const SizedBox(width: 8),
-                    const Text('Required Permissions',
-                        style: SwiftBeamTypography.headlineMedium),
+                    const Text(
+                      'Required Permissions',
+                      style: SwiftBeamTypography.headlineMedium,
+                    ),
                   ],
                 ),
                 const SizedBox(width: 8),
@@ -122,10 +127,12 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: item.isGranted
-                                    ? SwiftBeamColors.successGreen
-                                        .withValues(alpha: 0.15)
-                                    : SwiftBeamColors.primaryCyan
-                                        .withValues(alpha: 0.15),
+                                    ? SwiftBeamColors.successGreen.withValues(
+                                        alpha: 0.15,
+                                      )
+                                    : SwiftBeamColors.primaryCyan.withValues(
+                                        alpha: 0.15,
+                                      ),
                               ),
                               child: Icon(
                                 item.icon,
@@ -140,11 +147,15 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(item.title,
-                                      style: SwiftBeamTypography.titleMedium),
+                                  Text(
+                                    item.title,
+                                    style: SwiftBeamTypography.titleMedium,
+                                  ),
                                   const SizedBox(height: 2),
-                                  Text(item.subtitle,
-                                      style: SwiftBeamTypography.bodyMedium),
+                                  Text(
+                                    item.subtitle,
+                                    style: SwiftBeamTypography.bodyMedium,
+                                  ),
                                 ],
                               ),
                             ),
@@ -152,8 +163,9 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: item.isGranted
-                                    ? SwiftBeamColors.successGreen
-                                        .withValues(alpha: 0.2)
+                                    ? SwiftBeamColors.successGreen.withValues(
+                                        alpha: 0.2,
+                                      )
                                     : SwiftBeamColors.primaryCyan,
                                 foregroundColor: item.isGranted
                                     ? SwiftBeamColors.successGreen
@@ -167,7 +179,9 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                                   ),
                                 ),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
                               ),
                               onPressed: () async {
                                 if (kIsWeb ||
@@ -187,14 +201,14 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                                     Permission.bluetoothScan,
                                     Permission.bluetoothConnect,
                                     Permission.bluetoothAdvertise,
-                                    Permission.bluetooth
+                                    Permission.bluetooth,
                                   ].request();
                                 } else if (item.id == 'nearby') {
                                   await Permission.location.request();
                                 } else if (item.id == 'storage') {
                                   await [
                                     Permission.storage,
-                                    Permission.manageExternalStorage
+                                    Permission.manageExternalStorage,
                                   ].request();
                                 } else if (item.id == 'notifications') {
                                   await Permission.notification.request();
@@ -204,27 +218,34 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                                 if (item.id == 'wifi') {
                                   granted =
                                       await SafePermissionHandler.isGranted(
-                                          Permission.nearbyWifiDevices);
+                                    Permission.nearbyWifiDevices,
+                                  );
                                 } else if (item.id == 'ble') {
                                   granted =
                                       await SafePermissionHandler.isGranted(
-                                              Permission.bluetoothConnect) ||
+                                            Permission.bluetoothConnect,
+                                          ) ||
                                           await SafePermissionHandler.isGranted(
-                                              Permission.bluetooth);
+                                            Permission.bluetooth,
+                                          );
                                 } else if (item.id == 'nearby') {
                                   granted =
                                       await SafePermissionHandler.isGranted(
-                                          Permission.location);
+                                    Permission.location,
+                                  );
                                 } else if (item.id == 'storage') {
                                   granted =
                                       await SafePermissionHandler.isGranted(
-                                              Permission.storage) ||
+                                            Permission.storage,
+                                          ) ||
                                           await SafePermissionHandler.isGranted(
-                                              Permission.manageExternalStorage);
+                                            Permission.manageExternalStorage,
+                                          );
                                 } else if (item.id == 'notifications') {
                                   granted =
                                       await SafePermissionHandler.isGranted(
-                                          Permission.notification);
+                                    Permission.notification,
+                                  );
                                 }
 
                                 setState(() {
@@ -237,14 +258,20 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                                       children: [
                                         Icon(Icons.check_rounded, size: 18),
                                         SizedBox(width: 4),
-                                        Text('Granted',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
+                                        Text(
+                                          'Granted',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     )
-                                  : const Text('Grant',
+                                  : const Text(
+                                      'Grant',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
                           ],
                         ),

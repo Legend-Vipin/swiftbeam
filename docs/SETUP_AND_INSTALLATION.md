@@ -20,7 +20,7 @@ SwiftBeam supports native execution across desktop and mobile operating systems:
 
 ## 📦 2. Installing & Running `.tar.gz` Universal Bundle (Linux & macOS)
 
-SwiftBeam releases a universal multi-architecture `.tar.gz` archive (`swiftbeam-1.0.0-universal-multiarch.tar.gz`) containing auto-detecting native binaries for Linux (`x86_64`, `arm64`) and macOS (`x86_64`, `arm64`).
+SwiftBeam releases a universal multi-architecture `.tar.gz` archive (`swiftbeam-1.0.1-universal-multiarch.tar.gz`) containing auto-detecting native binaries for Linux (`x86_64`, `arm64`) and macOS (`x86_64`, `arm64`).
 
 ### Step-by-Step Installation
 
@@ -28,10 +28,10 @@ SwiftBeam releases a universal multi-architecture `.tar.gz` archive (`swiftbeam-
 Open your terminal and extract the downloaded tarball:
 ```bash
 # Extract the archive
-tar -xvf swiftbeam-1.0.0-universal-multiarch.tar.gz
+tar -xvf swiftbeam-1.0.1-universal-multiarch.tar.gz
 
 # Navigate into the extracted directory
-cd swiftbeam-1.0.0-universal-multiarch
+cd swiftbeam-1.0.1-universal-multiarch
 ```
 
 #### Step 2: Grant Execution Permissions
@@ -61,7 +61,7 @@ swiftbeam
 ##### macOS Applications Folder Integration:
 ```bash
 # Move SwiftBeam folder to Applications
-mv swiftbeam-1.0.0-universal-multiarch /Applications/SwiftBeam
+mv swiftbeam-1.0.1-universal-multiarch /Applications/SwiftBeam
 
 # Create terminal symlink
 sudo ln -sf /Applications/SwiftBeam/bin/swiftbeam /usr/local/bin/swiftbeam
@@ -170,7 +170,7 @@ To reduce CPU overhead and maximize 10GbE throughput:
 2. **Set Maximum Channel Width in Router Settings**:
    * Set 5 GHz Channel Width to **80 MHz** or **160 MHz**.
    * Set 6 GHz Channel Width to **160 MHz** or **320 MHz** (Wi-Fi 7).
-3. **Use Personal Hotspot / Wi-Fi Direct Mode**: Router Wi-Fi operates in half-duplex (Sender $\rightarrow$ Router $\rightarrow$ Receiver cuts speed in half). Turn on **5 GHz Personal Hotspot** on System 1 and connect System 2 directly to it for a full-speed point-to-point wireless link!
+3. **Use Wi-Fi Direct Mode**: Router Wi-Fi operates in half-duplex (Sender $\rightarrow$ Router $\rightarrow$ Receiver cuts speed in half). Use **Wi-Fi Direct** between devices for a full-speed point-to-point wireless link!
 
 ---
 

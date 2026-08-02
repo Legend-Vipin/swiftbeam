@@ -16,14 +16,11 @@ void main() {
     AppInitializationService.markInitializedForTest();
   });
 
-  testWidgets('SwiftBeam app smoke test and receive flow',
-      (WidgetTester tester) async {
+  testWidgets('SwiftBeam app smoke test and receive flow', (
+    WidgetTester tester,
+  ) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: SwiftBeamApp(),
-      ),
-    );
+    await tester.pumpWidget(const ProviderScope(child: SwiftBeamApp()));
 
     // Verify that main title is displayed
     expect(find.text('SwiftBeam'), findsOneWidget);

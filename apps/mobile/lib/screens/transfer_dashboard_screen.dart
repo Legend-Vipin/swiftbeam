@@ -84,8 +84,10 @@ class _TransferDashboardScreenState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Transfer Dashboard',
-                              style: SwiftBeamTypography.headlineMedium),
+                          const Text(
+                            'Transfer Dashboard',
+                            style: SwiftBeamTypography.headlineMedium,
+                          ),
                           Text(
                             activeCount > 0
                                 ? '$activeCount active transfer(s)'
@@ -97,19 +99,27 @@ class _TransferDashboardScreenState
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
-                        color:
-                            SwiftBeamColors.primaryCyan.withValues(alpha: 0.15),
+                        color: SwiftBeamColors.primaryCyan.withValues(
+                          alpha: 0.15,
+                        ),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                            color: SwiftBeamColors.primaryCyan
-                                .withValues(alpha: 0.4)),
+                          color: SwiftBeamColors.primaryCyan.withValues(
+                            alpha: 0.4,
+                          ),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.speed_rounded,
-                              color: SwiftBeamColors.primaryCyan, size: 16),
+                          const Icon(
+                            Icons.speed_rounded,
+                            color: SwiftBeamColors.primaryCyan,
+                            size: 16,
+                          ),
                           const SizedBox(width: 6),
                           Text(
                             totalSpeedStr,
@@ -134,21 +144,30 @@ class _TransferDashboardScreenState
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.shield_rounded,
-                              color: SwiftBeamColors.successGreen, size: 20),
+                          Icon(
+                            Icons.shield_rounded,
+                            color: SwiftBeamColors.successGreen,
+                            size: 20,
+                          ),
                           SizedBox(width: 8),
-                          Text('ChaCha20-Poly1305 Encrypted',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600)),
+                          Text(
+                            'ChaCha20-Poly1305 Encrypted',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ],
                       ),
-                      Text('QUIC P2P Direct',
-                          style: TextStyle(
-                              color: SwiftBeamColors.accentPurple,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold)),
+                      Text(
+                        'QUIC P2P Direct',
+                        style: TextStyle(
+                          color: SwiftBeamColors.accentPurple,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
                 ),

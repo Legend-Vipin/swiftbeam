@@ -20,11 +20,10 @@ Rust + Flutter monorepo for cross-platform P2P file transfer.
 
 ## CI/CD (GitHub Actions)
 
-- `.github/workflows/rust.yml`    — lint, clippy, test, cross-compile
-- `.github/workflows/flutter.yml` — analyze, test, build APK + iOS
-- `.github/workflows/release.yml` — auto-release + upload APK on version tag
-- `.github/workflows/security.yml`— weekly `cargo audit`
-- Release tag format: `v<major>.<minor>.<patch>`  (e.g. `git tag v1.0.0 && git push --tags`)
+- `.github/workflows/ci.yml`      — Monorepo CI runner for Rust & Flutter via `python3 tools/ci.py`
+- `.github/workflows/release.yml` — Auto-build & publish release APK + universal multi-arch tarball on release tag
+- Flutter setup uses `channel: 'stable'` (subosito/flutter-action@v2)
+- Release tag format: `v<major>.<minor>.<patch>`  (e.g. `git tag v1.0.1 && git push --tags`)
 
 ## Conventions
 

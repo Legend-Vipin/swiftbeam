@@ -84,8 +84,10 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
     if (url.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text(
-                'Please enter a valid receiver URL (e.g. http://192.168.1.25:8888)')),
+          content: Text(
+            'Please enter a valid receiver URL (e.g. http://192.168.1.25:8888)',
+          ),
+        ),
       );
       return;
     }
@@ -121,18 +123,24 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded,
-                          color: Colors.white),
+                      icon: const Icon(
+                        Icons.arrow_back_rounded,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     const SizedBox(width: 8),
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Scan Receiver QR',
-                            style: SwiftBeamTypography.headlineMedium),
-                        Text('Aim camera at Receiver QR code to connect',
-                            style: SwiftBeamTypography.bodyMedium),
+                        Text(
+                          'Scan Receiver QR',
+                          style: SwiftBeamTypography.headlineMedium,
+                        ),
+                        Text(
+                          'Aim camera at Receiver QR code to connect',
+                          style: SwiftBeamTypography.bodyMedium,
+                        ),
                       ],
                     ),
                   ],
@@ -148,14 +156,16 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                       color: Colors.black.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(
-                        color:
-                            SwiftBeamColors.primaryCyan.withValues(alpha: 0.6),
+                        color: SwiftBeamColors.primaryCyan.withValues(
+                          alpha: 0.6,
+                        ),
                         width: 2,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: SwiftBeamColors.primaryCyan
-                              .withValues(alpha: 0.25),
+                          color: SwiftBeamColors.primaryCyan.withValues(
+                            alpha: 0.25,
+                          ),
                           blurRadius: 20,
                           spreadRadius: 2,
                         ),
@@ -182,8 +192,11 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                             Container(
                               color: Colors.black87,
                               child: const Center(
-                                child: Icon(Icons.camera_alt_outlined,
-                                    color: Colors.white38, size: 64),
+                                child: Icon(
+                                  Icons.camera_alt_outlined,
+                                  color: Colors.white38,
+                                  size: 64,
+                                ),
                               ),
                             ),
 
@@ -192,8 +205,9 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                             margin: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: SwiftBeamColors.primaryCyan
-                                    .withValues(alpha: 0.8),
+                                color: SwiftBeamColors.primaryCyan.withValues(
+                                  alpha: 0.8,
+                                ),
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(16),
@@ -222,9 +236,7 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                                     30 + (_scanAnimationController.value * 180),
                                 left: 30,
                                 right: 30,
-                                child: RepaintBoundary(
-                                  child: child!,
-                                ),
+                                child: RepaintBoundary(child: child!),
                               );
                             },
                           ),
@@ -234,7 +246,9 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                             bottom: 12,
                             child: Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 6),
+                                horizontal: 14,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.black.withValues(alpha: 0.7),
                                 borderRadius: BorderRadius.circular(20),
@@ -242,15 +256,20 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                               ),
                               child: const Row(
                                 children: [
-                                  Icon(Icons.qr_code_scanner_rounded,
-                                      color: SwiftBeamColors.primaryCyan,
-                                      size: 16),
+                                  Icon(
+                                    Icons.qr_code_scanner_rounded,
+                                    color: SwiftBeamColors.primaryCyan,
+                                    size: 16,
+                                  ),
                                   SizedBox(width: 6),
-                                  Text('Auto-scanning QR Code...',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold)),
+                                  Text(
+                                    'Auto-scanning QR Code...',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -263,43 +282,54 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                 const SizedBox(height: 24),
 
                 // Manual URL Fallback Section
-                const Text('MANUAL CONNECTION OPTION',
-                    style: SwiftBeamTypography.labelLarge),
+                const Text(
+                  'MANUAL CONNECTION OPTION',
+                  style: SwiftBeamTypography.labelLarge,
+                ),
                 const SizedBox(height: 4),
                 const Text(
-                    'If QR scanning is unavailable, enter or paste the receiver URL:',
-                    style: SwiftBeamTypography.bodyMedium),
+                  'If QR scanning is unavailable, enter or paste the receiver URL:',
+                  style: SwiftBeamTypography.bodyMedium,
+                ),
                 const SizedBox(height: 12),
 
                 GlassContainer(
                   padding: const EdgeInsets.all(16),
-                  borderColor:
-                      SwiftBeamColors.accentPurple.withValues(alpha: 0.4),
+                  borderColor: SwiftBeamColors.accentPurple.withValues(
+                    alpha: 0.4,
+                  ),
                   child: Column(
                     children: [
                       TextField(
                         controller: _manualUrlController,
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.black.withValues(alpha: 0.3),
                           hintText: 'http://192.168.1.25:8888',
                           hintStyle: const TextStyle(color: Colors.white38),
-                          prefixIcon: const Icon(Icons.link_rounded,
-                              color: SwiftBeamColors.accentPurple),
+                          prefixIcon: const Icon(
+                            Icons.link_rounded,
+                            color: SwiftBeamColors.accentPurple,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide: BorderSide(
-                                color: SwiftBeamColors.accentPurple
-                                    .withValues(alpha: 0.4)),
+                              color: SwiftBeamColors.accentPurple.withValues(
+                                alpha: 0.4,
+                              ),
+                            ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide: const BorderSide(
-                                color: SwiftBeamColors.accentPurple, width: 2),
+                              color: SwiftBeamColors.accentPurple,
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
@@ -320,39 +350,51 @@ class _DiscoveryScreenState extends State<DiscoveryScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('AMBIENT PEERS (${_devices.length})',
-                          style: SwiftBeamTypography.labelLarge),
+                      Text(
+                        'AMBIENT PEERS (${_devices.length})',
+                        style: SwiftBeamTypography.labelLarge,
+                      ),
                       const SizedBox(
                         width: 14,
                         height: 14,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: SwiftBeamColors.primaryCyan),
+                          strokeWidth: 2,
+                          color: SwiftBeamColors.primaryCyan,
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
-                  ..._devices.map((device) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
-                        child: GlassContainer(
-                          padding: const EdgeInsets.all(14),
-                          onTap: widget.onDeviceSelected != null
-                              ? () => widget.onDeviceSelected!(device)
-                              : null,
-                          child: Row(
-                            children: [
-                              Icon(device.platformIcon, color: Colors.white),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                  child: Text(device.name,
-                                      style: SwiftBeamTypography.titleMedium)),
-                              const Text('Tap to connect',
-                                  style: TextStyle(
-                                      color: SwiftBeamColors.primaryCyan,
-                                      fontSize: 12)),
-                            ],
-                          ),
+                  ..._devices.map(
+                    (device) => Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: GlassContainer(
+                        padding: const EdgeInsets.all(14),
+                        onTap: widget.onDeviceSelected != null
+                            ? () => widget.onDeviceSelected!(device)
+                            : null,
+                        child: Row(
+                          children: [
+                            Icon(device.platformIcon, color: Colors.white),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                device.name,
+                                style: SwiftBeamTypography.titleMedium,
+                              ),
+                            ),
+                            const Text(
+                              'Tap to connect',
+                              style: TextStyle(
+                                color: SwiftBeamColors.primaryCyan,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                 ],
               ],
             ),

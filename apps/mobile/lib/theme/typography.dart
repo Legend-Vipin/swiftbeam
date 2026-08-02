@@ -51,11 +51,6 @@ class SwiftBeamTypography {
     fontSize: 16,
     fontWeight: FontWeight.bold,
     color: SwiftBeamColors.primaryCyan,
-    shadows: [
-      Shadow(
-        color: Color(0x8000D9FF),
-        blurRadius: 10,
-      ),
-    ],
+    shadows: [Shadow(color: Color(0x8000D9FF), blurRadius: 10)],
   );
 }

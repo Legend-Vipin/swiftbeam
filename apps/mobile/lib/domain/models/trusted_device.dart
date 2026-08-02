@@ -31,7 +31,8 @@ class TrustedDevice {
       name: map['name'] ?? '',
       publicKey: map['publicKey'] ?? '',
       lastConnected: DateTime.parse(
-          map['lastConnected'] ?? DateTime.now().toIso8601String()),
+        map['lastConnected'] ?? DateTime.now().toIso8601String(),
+      ),
       autoAccept: map['autoAccept'] ?? false,
     );
   }

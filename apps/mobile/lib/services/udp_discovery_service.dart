@@ -90,18 +90,25 @@ class UdpDiscoveryService {
       _socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, _port);
       _socket?.broadcastEnabled = true;
 
-      _socket?.listen((RawSocketEvent event) {
-        if (event == RawSocketEvent.read) {
-          _handleMessage();
-        }
-      }, onError: (Object e) {
-        // Handle socket errors gracefully
-      });
+      _socket?.listen(
+        (RawSocketEvent event) {
+          if (event == RawSocketEvent.read) {
+            _handleMessage();
+          }
+        },
+        onError: (Object e) {
+          // Handle socket errors gracefully
+        },
+      );
 
-      _broadcastTimer =
-          Timer.periodic(_broadcastInterval, (_) => _broadcastPresence());
+      _broadcastTimer = Timer.periodic(
+        _broadcastInterval,
+        (_) => _broadcastPresence(),
+      );
       _cleanupTimer = Timer.periodic(
-          const Duration(seconds: 2), (_) => _cleanupStalePeers());
+        const Duration(seconds: 2),
+        (_) => _cleanupStalePeers(),
+      );
 
       _broadcastPresence();
     } catch (e) {

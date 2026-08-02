@@ -32,7 +32,8 @@ class DeviceIdentityService {
       }
     } catch (e) {
       debugPrint(
-          'DeviceIdentityService: Error getting sync fallback device name: $e');
+        'DeviceIdentityService: Error getting sync fallback device name: $e',
+      );
     }
     return 'SwiftBeam Device';
   }

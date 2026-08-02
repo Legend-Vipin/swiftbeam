@@ -37,11 +37,13 @@ class HomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: SwiftBeamColors.primaryCyan
-                              .withValues(alpha: 0.15),
+                          color: SwiftBeamColors.primaryCyan.withValues(
+                            alpha: 0.15,
+                          ),
                           border: Border.all(
-                            color: SwiftBeamColors.primaryCyan
-                                .withValues(alpha: 0.4),
+                            color: SwiftBeamColors.primaryCyan.withValues(
+                              alpha: 0.4,
+                            ),
                           ),
                         ),
                         child: ClipOval(
@@ -62,17 +64,23 @@ class HomeScreen extends StatelessWidget {
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('SwiftBeam',
-                              style: SwiftBeamTypography.titleLarge),
-                          Text('Ultra-fast P2P Transfer',
-                              style: SwiftBeamTypography.bodyMedium),
+                          Text(
+                            'SwiftBeam',
+                            style: SwiftBeamTypography.titleLarge,
+                          ),
+                          Text(
+                            'Ultra-fast P2P Transfer',
+                            style: SwiftBeamTypography.bodyMedium,
+                          ),
                         ],
                       ),
                     ],
                   ),
                   IconButton(
-                    icon: const Icon(Icons.shield_outlined,
-                        color: Colors.white70),
+                    icon: const Icon(
+                      Icons.shield_outlined,
+                      color: Colors.white70,
+                    ),
                     onPressed: onPermissionsPressed,
                     tooltip: 'Permissions',
                   ),
@@ -99,8 +107,9 @@ class HomeScreen extends StatelessWidget {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: SwiftBeamColors.primaryCyan
-                                      .withValues(alpha: 0.25),
+                                  color: SwiftBeamColors.primaryCyan.withValues(
+                                    alpha: 0.25,
+                                  ),
                                   blurRadius: 30,
                                   spreadRadius: 10,
                                 ),
@@ -121,8 +130,9 @@ class HomeScreen extends StatelessWidget {
                               gradient: SwiftBeamColors.primaryGradient,
                               boxShadow: [
                                 BoxShadow(
-                                  color: SwiftBeamColors.primaryCyan
-                                      .withValues(alpha: 0.4),
+                                  color: SwiftBeamColors.primaryCyan.withValues(
+                                    alpha: 0.4,
+                                  ),
                                   blurRadius: 15,
                                 ),
                               ],
@@ -169,16 +179,18 @@ class HomeScreen extends StatelessWidget {
                     child: GlassContainer(
                       padding: const EdgeInsets.all(20),
                       onTap: onSendPressed,
-                      borderColor:
-                          SwiftBeamColors.primaryCyan.withValues(alpha: 0.4),
+                      borderColor: SwiftBeamColors.primaryCyan.withValues(
+                        alpha: 0.4,
+                      ),
                       child: Column(
                         children: [
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: SwiftBeamColors.primaryCyan
-                                  .withValues(alpha: 0.15),
+                              color: SwiftBeamColors.primaryCyan.withValues(
+                                alpha: 0.15,
+                              ),
                             ),
                             child: const Icon(
                               Icons.upload_rounded,
@@ -187,11 +199,15 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          const Text('SEND',
-                              style: SwiftBeamTypography.titleMedium),
+                          const Text(
+                            'SEND',
+                            style: SwiftBeamTypography.titleMedium,
+                          ),
                           const SizedBox(height: 4),
-                          const Text('Share Files',
-                              style: SwiftBeamTypography.bodyMedium),
+                          const Text(
+                            'Share Files',
+                            style: SwiftBeamTypography.bodyMedium,
+                          ),
                         ],
                       ),
                     ),
@@ -201,16 +217,18 @@ class HomeScreen extends StatelessWidget {
                     child: GlassContainer(
                       padding: const EdgeInsets.all(20),
                       onTap: onReceivePressed,
-                      borderColor:
-                          SwiftBeamColors.accentPurple.withValues(alpha: 0.4),
+                      borderColor: SwiftBeamColors.accentPurple.withValues(
+                        alpha: 0.4,
+                      ),
                       child: Column(
                         children: [
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: SwiftBeamColors.accentPurple
-                                  .withValues(alpha: 0.15),
+                              color: SwiftBeamColors.accentPurple.withValues(
+                                alpha: 0.15,
+                              ),
                             ),
                             child: const Icon(
                               Icons.download_rounded,
@@ -219,11 +237,15 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          const Text('RECEIVE',
-                              style: SwiftBeamTypography.titleMedium),
+                          const Text(
+                            'RECEIVE',
+                            style: SwiftBeamTypography.titleMedium,
+                          ),
                           const SizedBox(height: 4),
-                          const Text('Scan & Accept',
-                              style: SwiftBeamTypography.bodyMedium),
+                          const Text(
+                            'Scan & Accept',
+                            style: SwiftBeamTypography.bodyMedium,
+                          ),
                         ],
                       ),
                     ),

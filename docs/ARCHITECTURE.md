@@ -19,9 +19,9 @@ SwiftBeam is a cross-platform, zero-internet P2P encrypted file transfer applica
                     |                    |
 +-----------------------+  +--------------------+  +--------------------+
 |   swiftbeam-core      |  |   swiftbeam-net    |  | swiftbeam-crypto   |
-| 1MB Memory Map    |  | QUIC / quinn       |  | X25519 ECDH        |
-| BLAKE3 Checksums  |  | mDNS Peer Radar    |  | ChaCha20-Poly1305  |
-| Resume Machine    |  | WebAssembly (Wasm) |  | BLAKE3 Hashing     |
+| 1MB Memory Map        |  | QUIC / quinn       |  | X25519 ECDH        |
+| BLAKE3 Checksums      |  | mDNS Peer Radar    |  | ChaCha20-Poly1305  |
+| Resume Machine        |  | WebAssembly (Wasm) |  | BLAKE3 Hashing     |
 +-----------------------+  +--------------------+  +--------------------+
 ```
 
@@ -29,12 +29,20 @@ SwiftBeam is a cross-platform, zero-internet P2P encrypted file transfer applica
 
 ## Transport Layers & Fallback Priority
 
-SwiftBeam dynamically selects the optimal transport path:
+SwiftBeam dynamically negotiates transport protocols between Sender and Receiver based on network and hardware availability:
 
-1. **mDNS Peer Radar** (Ambient auto-discovery, app-to-app, high-speed QUIC)
-2. **QR Code Scan → QUIC** (Direct P2P socket across subnets)
-3. **QR Code Scan → Web Portal HTTP** (No-app fallback for iOS, Mac, Windows, Android browsers)
-4. **Local Wi-Fi AP Hotspot** (Offline direct AP mode)
+| Sender Bluetooth | Receiver Bluetooth | Connection & Discovery Mode | Data Transfer Transport |
+| :--- | :--- | :--- | :--- |
+| **Available** | **Available** | **Bluetooth + Wi-Fi Dual Mode** | BLE Proximity + High-Speed QUIC over Wi-Fi Direct / Local Wi-Fi |
+| **Unavailable** | **Available** | **Only Wi-Fi Mode** | Local mDNS / Wi-Fi Direct QUIC Stream |
+| **Available** | **Unavailable** | **Only Wi-Fi Mode** | Local mDNS / Wi-Fi Direct QUIC Stream |
+| **Unavailable** | **Unavailable** | **Only Wi-Fi Mode** | Local mDNS / Wi-Fi Direct QUIC Stream |
+
+### Transport Hierarchy:
+1. **mDNS Peer Radar**: Ambient auto-discovery for nearby app-to-app peers over local Wi-Fi.
+2. **Bluetooth LE + QUIC (Dual Mode)**: BLE proximity pairing when enabled on both Sender & Receiver + high-speed QUIC transport over Wi-Fi Direct.
+3. **QR Code Scan → QUIC**: QR metadata scanning containing Base64 parameters for cross-subnet app-to-app connection.
+4. **QR Code Scan → Web Portal HTTP**: Browser fallback for devices without the native client installed.
 
 ---
 
@@ -46,9 +54,17 @@ SwiftBeam dynamically selects the optimal transport path:
 
 ---
 
+## Transfer History & Persistence System
+
+- **Automatic Persistence**: Completed and failed transfers are saved automatically to device storage via `SharedPreferences` (`swiftbeam_transfer_history_v1`).
+- **Real-Time Search & Filter**: Filter transfer history by filename/peer name and category chips (`All`, `Sent`, `Received`, `Success`, `Failed`).
+- **Record Details Modal**: Glassmorphic sheet displaying transfer ID, size, direction, peer name, status, and precise timestamp.
+
+---
+
 ## Universal Multi-OS & Multi-Architecture Bundle
 
-SwiftBeam builds a single universal `.tar.gz` bundle (`swiftbeam-1.0.0-universal-multiarch.tar.gz`) containing native binaries for:
+SwiftBeam builds a single universal `.tar.gz` bundle (`swiftbeam-1.0.1-universal-multiarch.tar.gz`) containing native binaries for:
 
 - **Linux**: `x86_64` (Intel/AMD) and `arm64` / `aarch64`
 - **macOS**: `x86_64` (Intel) and `arm64` (Apple Silicon M1-M4)

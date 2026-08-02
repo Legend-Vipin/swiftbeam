@@ -18,8 +18,10 @@ class HistoryNotifier extends StateNotifier<List<TransferHistoryRecord>> {
       if (jsonStr != null && jsonStr.isNotEmpty) {
         final List<dynamic> jsonList = jsonDecode(jsonStr);
         final records = jsonList
-            .map((item) =>
-                TransferHistoryRecord.fromMap(item as Map<String, dynamic>))
+            .map(
+              (item) =>
+                  TransferHistoryRecord.fromMap(item as Map<String, dynamic>),
+            )
             .toList();
         state = records;
       }

@@ -28,8 +28,10 @@ class _ReceiverTabletScreenState extends State<ReceiverTabletScreen> {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded,
-                          color: Colors.white),
+                      icon: const Icon(
+                        Icons.arrow_back_rounded,
+                        color: Colors.white,
+                      ),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     const SizedBox(width: 8),
@@ -50,10 +52,7 @@ class _ReceiverTabletScreenState extends State<ReceiverTabletScreen> {
                       child: const Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Flexible(
-                            flex: 3,
-                            child: QRReceiverWidget(),
-                          ),
+                          Flexible(flex: 3, child: QRReceiverWidget()),
                         ],
                       ),
                     ),

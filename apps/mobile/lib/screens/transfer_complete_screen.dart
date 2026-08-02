@@ -41,11 +41,14 @@ class TransferCompleteScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: SwiftBeamColors.successGreen.withValues(alpha: 0.15),
                     border: Border.all(
-                        color: SwiftBeamColors.successGreen, width: 3),
+                      color: SwiftBeamColors.successGreen,
+                      width: 3,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color:
-                            SwiftBeamColors.successGreen.withValues(alpha: 0.4),
+                        color: SwiftBeamColors.successGreen.withValues(
+                          alpha: 0.4,
+                        ),
                         blurRadius: 30,
                         spreadRadius: 5,
                       ),
@@ -59,8 +62,10 @@ class TransferCompleteScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 28),
 
-                const Text('Transfer Complete!',
-                    style: SwiftBeamTypography.headlineMedium),
+                const Text(
+                  'Transfer Complete!',
+                  style: SwiftBeamTypography.headlineMedium,
+                ),
                 const SizedBox(height: 8),
                 Text(
                   summaryText,
@@ -72,21 +77,25 @@ class TransferCompleteScreen extends StatelessWidget {
                 // Transfer Summary Stats Card
                 GlassContainer(
                   padding: const EdgeInsets.all(20),
-                  borderColor:
-                      SwiftBeamColors.successGreen.withValues(alpha: 0.3),
+                  borderColor: SwiftBeamColors.successGreen.withValues(
+                    alpha: 0.3,
+                  ),
                   child: const Column(
                     children: [
                       _StatRow(
-                          label: 'Transport Protocol',
-                          value: 'QUIC / UDP Direct'),
+                        label: 'Transport Protocol',
+                        value: 'QUIC / UDP Direct',
+                      ),
                       Divider(color: Colors.white10),
                       _StatRow(
-                          label: 'Cipher Spec',
-                          value: 'ChaCha20-Poly1305 AEAD'),
+                        label: 'Cipher Spec',
+                        value: 'ChaCha20-Poly1305 AEAD',
+                      ),
                       Divider(color: Colors.white10),
                       _StatRow(
-                          label: 'Verification Integrity',
-                          value: 'BLAKE3 Hash Verified 100%'),
+                        label: 'Verification Integrity',
+                        value: 'BLAKE3 Hash Verified 100%',
+                      ),
                     ],
                   ),
                 ),
@@ -101,10 +110,13 @@ class TransferCompleteScreen extends StatelessWidget {
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,
                           side: const BorderSide(
-                              color: Colors.white30, width: 1.5),
+                            color: Colors.white30,
+                            width: 1.5,
+                          ),
                           minimumSize: const Size.fromHeight(56),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
                         onPressed: onOpenFolder,
                         child: const Row(
@@ -112,8 +124,10 @@ class TransferCompleteScreen extends StatelessWidget {
                           children: [
                             Icon(Icons.folder_open_rounded, size: 20),
                             SizedBox(width: 8),
-                            Text('Open Folder',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text(
+                              'Open Folder',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ],
                         ),
                       ),

@@ -221,8 +221,9 @@ class TransferAcceptDialog extends StatelessWidget {
                       onPressed: () => Navigator.of(context).pop(false),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        side:
-                            const BorderSide(color: SwiftBeamColors.dangerRed),
+                        side: const BorderSide(
+                          color: SwiftBeamColors.dangerRed,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

@@ -37,15 +37,19 @@ class TransferListWidget extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.swap_horizontal_circle_outlined,
-                  size: 64, color: Colors.grey.shade400),
+              Icon(
+                Icons.swap_horizontal_circle_outlined,
+                size: 64,
+                color: Colors.grey.shade400,
+              ),
               const SizedBox(height: 16),
               Text(
                 'No active file transfers',
                 style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
+                  color: Colors.grey.shade600,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
@@ -71,29 +75,41 @@ class TransferListWidget extends ConsumerWidget {
             statusColor = const Color(0xFF00D97E);
             accentGlow = const Color(0xFF00D97E).withValues(alpha: 0.25);
             statusLabel = "Completed";
-            statusIcon = const Icon(Icons.check_circle_rounded,
-                color: Color(0xFF00D97E), size: 24);
+            statusIcon = const Icon(
+              Icons.check_circle_rounded,
+              color: Color(0xFF00D97E),
+              size: 24,
+            );
             break;
           case 'failed':
             statusColor = const Color(0xFFFF5D73);
             accentGlow = const Color(0xFFFF5D73).withValues(alpha: 0.25);
             statusLabel = "Failed";
-            statusIcon = const Icon(Icons.error_rounded,
-                color: Color(0xFFFF5D73), size: 24);
+            statusIcon = const Icon(
+              Icons.error_rounded,
+              color: Color(0xFFFF5D73),
+              size: 24,
+            );
             break;
           case 'paused':
             statusColor = const Color(0xFFAE6BFF);
             accentGlow = const Color(0xFFAE6BFF).withValues(alpha: 0.25);
             statusLabel = "Paused";
-            statusIcon = const Icon(Icons.pause_circle_rounded,
-                color: Color(0xFFAE6BFF), size: 24);
+            statusIcon = const Icon(
+              Icons.pause_circle_rounded,
+              color: Color(0xFFAE6BFF),
+              size: 24,
+            );
             break;
           case 'cancelled':
             statusColor = Colors.white38;
             accentGlow = Colors.transparent;
             statusLabel = "Cancelled";
-            statusIcon = const Icon(Icons.block_rounded,
-                color: Colors.white38, size: 24);
+            statusIcon = const Icon(
+              Icons.block_rounded,
+              color: Colors.white38,
+              size: 24,
+            );
             break;
           case 'started':
           case 'progressing':
@@ -105,7 +121,9 @@ class TransferListWidget extends ConsumerWidget {
               width: 22,
               height: 22,
               child: CircularProgressIndicator(
-                  strokeWidth: 2.8, color: Color(0xFF00D9FF)),
+                strokeWidth: 2.8,
+                color: Color(0xFF00D9FF),
+              ),
             );
         }
 
@@ -161,7 +179,9 @@ class TransferListWidget extends ConsumerWidget {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: statusColor.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(6),
@@ -220,8 +240,10 @@ class TransferListWidget extends ConsumerWidget {
               if (transfer.status == 'progressing' ||
                   transfer.status == 'started') ...[
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.4),
                     borderRadius: BorderRadius.circular(16),
@@ -235,8 +257,11 @@ class TransferListWidget extends ConsumerWidget {
                       // Speed Metric
                       Row(
                         children: [
-                          const Icon(Icons.bolt_rounded,
-                              color: Color(0xFF00D9FF), size: 18),
+                          const Icon(
+                            Icons.bolt_rounded,
+                            color: Color(0xFF00D9FF),
+                            size: 18,
+                          ),
                           const SizedBox(width: 6),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,8 +292,11 @@ class TransferListWidget extends ConsumerWidget {
                       // ETA Metric
                       Row(
                         children: [
-                          const Icon(Icons.timer_outlined,
-                              color: Color(0xFF34D399), size: 18),
+                          const Icon(
+                            Icons.timer_outlined,
+                            color: Color(0xFF34D399),
+                            size: 18,
+                          ),
                           const SizedBox(width: 6),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,8 +327,11 @@ class TransferListWidget extends ConsumerWidget {
                       // Encryption Badge
                       const Row(
                         children: [
-                          Icon(Icons.security_rounded,
-                              color: Color(0xFFAE6BFF), size: 16),
+                          Icon(
+                            Icons.security_rounded,
+                            color: Color(0xFFAE6BFF),
+                            size: 16,
+                          ),
                           SizedBox(width: 4),
                           Text(
                             'P2P QUIC',
@@ -328,16 +359,21 @@ class TransferListWidget extends ConsumerWidget {
                       TextButton.icon(
                         style: TextButton.styleFrom(
                           foregroundColor: const Color(0xFFAE6BFF),
-                          backgroundColor:
-                              const Color(0xFFAE6BFF).withValues(alpha: 0.12),
+                          backgroundColor: const Color(
+                            0xFFAE6BFF,
+                          ).withValues(alpha: 0.12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         icon: const Icon(Icons.pause_circle_rounded, size: 18),
-                        label: const Text('Pause',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12)),
+                        label: const Text(
+                          'Pause',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                         onPressed: () => ref
                             .read(transferListProvider.notifier)
                             .pauseTransfer(transfer.transferId),
@@ -346,16 +382,21 @@ class TransferListWidget extends ConsumerWidget {
                       TextButton.icon(
                         style: TextButton.styleFrom(
                           foregroundColor: const Color(0xFFFF5D73),
-                          backgroundColor:
-                              const Color(0xFFFF5D73).withValues(alpha: 0.12),
+                          backgroundColor: const Color(
+                            0xFFFF5D73,
+                          ).withValues(alpha: 0.12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         icon: const Icon(Icons.cancel_rounded, size: 18),
-                        label: const Text('Cancel',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12)),
+                        label: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                         onPressed: () => ref
                             .read(transferListProvider.notifier)
                             .cancelTransfer(transfer.transferId),
@@ -364,16 +405,21 @@ class TransferListWidget extends ConsumerWidget {
                       TextButton.icon(
                         style: TextButton.styleFrom(
                           foregroundColor: const Color(0xFF00D9FF),
-                          backgroundColor:
-                              const Color(0xFF00D9FF).withValues(alpha: 0.12),
+                          backgroundColor: const Color(
+                            0xFF00D9FF,
+                          ).withValues(alpha: 0.12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         icon: const Icon(Icons.play_circle_rounded, size: 18),
-                        label: const Text('Resume',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12)),
+                        label: const Text(
+                          'Resume',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                         onPressed: () => ref
                             .read(transferListProvider.notifier)
                             .resumeTransfer(transfer.transferId),
@@ -382,16 +428,21 @@ class TransferListWidget extends ConsumerWidget {
                       TextButton.icon(
                         style: TextButton.styleFrom(
                           foregroundColor: const Color(0xFFFF5D73),
-                          backgroundColor:
-                              const Color(0xFFFF5D73).withValues(alpha: 0.12),
+                          backgroundColor: const Color(
+                            0xFFFF5D73,
+                          ).withValues(alpha: 0.12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         icon: const Icon(Icons.cancel_rounded, size: 18),
-                        label: const Text('Cancel',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12)),
+                        label: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                         onPressed: () => ref
                             .read(transferListProvider.notifier)
                             .cancelTransfer(transfer.transferId),
@@ -401,16 +452,21 @@ class TransferListWidget extends ConsumerWidget {
                       TextButton.icon(
                         style: TextButton.styleFrom(
                           foregroundColor: const Color(0xFFFFB84D),
-                          backgroundColor:
-                              const Color(0xFFFFB84D).withValues(alpha: 0.12),
+                          backgroundColor: const Color(
+                            0xFFFFB84D,
+                          ).withValues(alpha: 0.12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         icon: const Icon(Icons.refresh_rounded, size: 18),
-                        label: const Text('Retry',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12)),
+                        label: const Text(
+                          'Retry',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
                         onPressed: () => ref
                             .read(transferListProvider.notifier)
                             .retryTransfer(transfer.transferId),

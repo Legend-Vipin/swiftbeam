@@ -24,11 +24,15 @@ class DevicesScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Paired Devices & Status',
-                  style: SwiftBeamTypography.headlineMedium),
+              const Text(
+                'Paired Devices & Status',
+                style: SwiftBeamTypography.headlineMedium,
+              ),
               const SizedBox(height: 4),
-              const Text('Manage trusted peer endpoints and local status',
-                  style: SwiftBeamTypography.bodyMedium),
+              const Text(
+                'Manage trusted peer endpoints and local status',
+                style: SwiftBeamTypography.bodyMedium,
+              ),
               const SizedBox(height: 20),
 
               // Local Device Status Card
@@ -41,44 +45,58 @@ class DevicesScreen extends ConsumerWidget {
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color:
-                            SwiftBeamColors.primaryCyan.withValues(alpha: 0.15),
+                        color: SwiftBeamColors.primaryCyan.withValues(
+                          alpha: 0.15,
+                        ),
                       ),
-                      child: const Icon(Icons.laptop_rounded,
-                          color: SwiftBeamColors.primaryCyan, size: 28),
+                      child: const Icon(
+                        Icons.laptop_rounded,
+                        color: SwiftBeamColors.primaryCyan,
+                        size: 28,
+                      ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('THIS DEVICE (LOCAL ENDPOINT)',
-                              style: TextStyle(
-                                  color: SwiftBeamColors.primaryCyan,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold)),
+                          const Text(
+                            'THIS DEVICE (LOCAL ENDPOINT)',
+                            style: TextStyle(
+                              color: SwiftBeamColors.primaryCyan,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           Row(
                             children: [
                               Expanded(
-                                child: Text(settings.deviceName,
-                                    style: SwiftBeamTypography.titleMedium),
+                                child: Text(
+                                  settings.deviceName,
+                                  style: SwiftBeamTypography.titleMedium,
+                                ),
                               ),
                               if (settings.isCustomName)
                                 Container(
                                   margin: const EdgeInsets.only(left: 6),
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 2),
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: SwiftBeamColors.accentPurple
                                         .withValues(alpha: 0.2),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
-                                  child: const Text('Custom',
-                                      style: TextStyle(
-                                          color: SwiftBeamColors.accentPurple,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold)),
+                                  child: const Text(
+                                    'Custom',
+                                    style: TextStyle(
+                                      color: SwiftBeamColors.accentPurple,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                             ],
                           ),
@@ -93,8 +111,10 @@ class DevicesScreen extends ConsumerWidget {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.edit_rounded,
-                          color: SwiftBeamColors.primaryCyan),
+                      icon: const Icon(
+                        Icons.edit_rounded,
+                        color: SwiftBeamColors.primaryCyan,
+                      ),
                       tooltip: 'Edit Device Name',
                       onPressed: () =>
                           _showEditDeviceNameDialog(context, ref, settings),
@@ -104,8 +124,10 @@ class DevicesScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
 
-              const Text('TRUSTED PEERS',
-                  style: SwiftBeamTypography.labelLarge),
+              const Text(
+                'TRUSTED PEERS',
+                style: SwiftBeamTypography.labelLarge,
+              ),
               const SizedBox(height: 12),
 
               Expanded(
@@ -116,11 +138,16 @@ class DevicesScreen extends ConsumerWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.devices_other_rounded,
-                                  color: Colors.white38, size: 48),
+                              Icon(
+                                Icons.devices_other_rounded,
+                                color: Colors.white38,
+                                size: 48,
+                              ),
                               SizedBox(height: 12),
-                              Text('No Paired Devices Yet',
-                                  style: SwiftBeamTypography.titleMedium),
+                              Text(
+                                'No Paired Devices Yet',
+                                style: SwiftBeamTypography.titleMedium,
+                              ),
                               SizedBox(height: 4),
                               Text(
                                 'Devices will automatically appear here once scanned or connected via mDNS/QR.',
@@ -146,8 +173,11 @@ class DevicesScreen extends ConsumerWidget {
                                     shape: BoxShape.circle,
                                     color: SwiftBeamColors.surface,
                                   ),
-                                  child: Icon(device.platformIcon,
-                                      color: Colors.white, size: 24),
+                                  child: Icon(
+                                    device.platformIcon,
+                                    color: Colors.white,
+                                    size: 24,
+                                  ),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
@@ -155,13 +185,15 @@ class DevicesScreen extends ConsumerWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(device.name,
-                                          style:
-                                              SwiftBeamTypography.titleMedium),
+                                      Text(
+                                        device.name,
+                                        style: SwiftBeamTypography.titleMedium,
+                                      ),
                                       const SizedBox(height: 2),
-                                      Text('${device.ipAddress} • Connected',
-                                          style:
-                                              SwiftBeamTypography.bodyMedium),
+                                      Text(
+                                        '${device.ipAddress} • Connected',
+                                        style: SwiftBeamTypography.bodyMedium,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -179,22 +211,29 @@ class DevicesScreen extends ConsumerWidget {
   }
 
   void _showEditDeviceNameDialog(
-      BuildContext context, WidgetRef ref, DeviceSettings settings) {
+    BuildContext context,
+    WidgetRef ref,
+    DeviceSettings settings,
+  ) {
     final controller = TextEditingController(text: settings.deviceName);
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: const Color(0xFF161B22),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: BorderSide(
-                color: SwiftBeamColors.primaryCyan.withValues(alpha: 0.4))),
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: SwiftBeamColors.primaryCyan.withValues(alpha: 0.4),
+          ),
+        ),
         title: const Row(
           children: [
             Icon(Icons.edit_rounded, color: SwiftBeamColors.primaryCyan),
             SizedBox(width: 10),
-            Text('Edit Device Name',
-                style: TextStyle(color: Colors.white, fontSize: 18)),
+            Text(
+              'Edit Device Name',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
           ],
         ),
         content: Column(
@@ -224,13 +263,15 @@ class DevicesScreen extends ConsumerWidget {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
-                      color:
-                          SwiftBeamColors.primaryCyan.withValues(alpha: 0.4)),
+                    color: SwiftBeamColors.primaryCyan.withValues(alpha: 0.4),
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                      color: SwiftBeamColors.primaryCyan, width: 2),
+                    color: SwiftBeamColors.primaryCyan,
+                    width: 2,
+                  ),
                 ),
               ),
             ),
@@ -247,26 +288,32 @@ class DevicesScreen extends ConsumerWidget {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content:
-                          Text('Device name reset to real device identity!'),
+                      content: Text(
+                        'Device name reset to real device identity!',
+                      ),
                     ),
                   );
                 }
               },
-              child: const Text('Reset to Real',
-                  style: TextStyle(color: Colors.amber)),
+              child: const Text(
+                'Reset to Real',
+                style: TextStyle(color: Colors.amber),
+              ),
             ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child:
-                const Text('Cancel', style: TextStyle(color: Colors.white54)),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.white54),
+            ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: SwiftBeamColors.primaryCyan,
               foregroundColor: Colors.black,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             onPressed: () {
               final newName = controller.text.trim();
@@ -283,8 +330,10 @@ class DevicesScreen extends ConsumerWidget {
                 );
               }
             },
-            child: const Text('Save',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text(
+              'Save',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),

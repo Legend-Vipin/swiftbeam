@@ -86,18 +86,21 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
       // The very first item is the QR JSON config payload.
       // Subsequent items are transfer event JSON strings.
       final completer = Completer<String>();
-      _ffiSubscription = ffiStream.listen((event) {
-        if (!completer.isCompleted) {
-          completer.complete(event);
-        } else {
-          // Process transfer progress events
-          ref.read(transferListProvider.notifier).handleFfiEventJson(event);
-        }
-      }, onError: (err) {
-        if (!completer.isCompleted) {
-          completer.completeError(err);
-        }
-      });
+      _ffiSubscription = ffiStream.listen(
+        (event) {
+          if (!completer.isCompleted) {
+            completer.complete(event);
+          } else {
+            // Process transfer progress events
+            ref.read(transferListProvider.notifier).handleFfiEventJson(event);
+          }
+        },
+        onError: (err) {
+          if (!completer.isCompleted) {
+            completer.completeError(err);
+          }
+        },
+      );
 
       final ffiResult = await completer.future.timeout(
         const Duration(seconds: 5),
@@ -113,7 +116,10 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
       try {
         final peerId = await initPeer(deviceName: currentDeviceName);
         await advertisePeer(
-            peerId: peerId, deviceName: currentDeviceName, port: quicPort);
+          peerId: peerId,
+          deviceName: currentDeviceName,
+          port: quicPort,
+        );
       } catch (e) {
         debugPrint("mDNS Advertising failed to start: $e");
       }
@@ -127,7 +133,8 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
         "token": token,
         "pub_key": pubKey,
         "expires": (DateTime.now().millisecondsSinceEpoch ~/ 1000) + 3600,
-        "version": "1.0"
+        "version": "1.0",
+        "ble_available": _isBluetoothAvailable,
       });
       final base64Meta = base64Encode(utf8.encode(mockMeta));
       final uri = 'http://$ip:$httpPort/upload?data=$base64Meta';
@@ -155,22 +162,31 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Root cause:',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Root cause:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text(e.toString()),
                   const SizedBox(height: 8),
-                  const Text('Affected file:',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Affected file:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const Text('lib/widgets/qr_receiver_widget.dart'),
                   const SizedBox(height: 8),
-                  const Text('Affected function:',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Affected function:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const Text('_startReceiver()'),
                   const SizedBox(height: 8),
-                  const Text('Required fix:',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
                   const Text(
-                      'Ensure RustLib is initialized and all permissions are granted.'),
+                    'Required fix:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const Text(
+                    'Ensure RustLib is initialized and all permissions are granted.',
+                  ),
                 ],
               ),
             ),
@@ -225,20 +241,26 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
         children: [
           if (activeTransfers.isNotEmpty) ...[
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 12.0,
+              ),
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: const Color(0xFF00D97E).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                      color: const Color(0xFF00D97E).withValues(alpha: 0.3)),
+                    color: const Color(0xFF00D97E).withValues(alpha: 0.3),
+                  ),
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.downloading_rounded,
-                        color: Color(0xFF00D97E), size: 28),
+                    Icon(
+                      Icons.downloading_rounded,
+                      color: Color(0xFF00D97E),
+                      size: 28,
+                    ),
                     SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -247,14 +269,17 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
                           Text(
                             'Receiving File Live',
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                           Text(
                             'High-speed encrypted QUIC connection active',
-                            style:
-                                TextStyle(color: Colors.white70, fontSize: 12),
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),
@@ -271,7 +296,10 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
           const Text(
             'Scan to Connect',
             style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(height: 6),
           const Padding(
@@ -286,15 +314,16 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF00D9FF).withValues(alpha: 0.25),
-                    blurRadius: 24,
-                    spreadRadius: 4,
-                  )
-                ]),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF00D9FF).withValues(alpha: 0.25),
+                  blurRadius: 24,
+                  spreadRadius: 4,
+                ),
+              ],
+            ),
             child: RepaintBoundary(
               child: QrImageView(
                 data: _qrUri!,
@@ -321,16 +350,20 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.bluetooth_disabled_rounded,
-                      color: Colors.amber, size: 18),
+                  Icon(
+                    Icons.bluetooth_disabled_rounded,
+                    color: Colors.amber,
+                    size: 18,
+                  ),
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Bluetooth is disabled. Continuing with Wi-Fi Receiver Mode.',
+                      'Bluetooth is disabled or unavailable. Falling back strictly to Wi-Fi Direct Receiver Mode.',
                       style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 11.5,
-                          fontWeight: FontWeight.w500),
+                        color: Colors.amber,
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
@@ -345,37 +378,46 @@ class _QRReceiverWidgetState extends ConsumerState<QRReceiverWidget> {
               color: const Color(0xFF161B22),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                  color: const Color(0xFF00D9FF).withValues(alpha: 0.3)),
+                color: const Color(0xFF00D9FF).withValues(alpha: 0.3),
+              ),
             ),
             child: Column(
               children: [
                 const Text(
                   'Or enter manually in any browser (same Wi-Fi):',
                   style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w500),
+                    color: Colors.white70,
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.language_rounded,
-                        color: Color(0xFF00D9FF), size: 18),
+                    const Icon(
+                      Icons.language_rounded,
+                      color: Color(0xFF00D9FF),
+                      size: 18,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: SelectableText(
                         _manualUrl ?? 'http://$_qrUri',
                         style: const TextStyle(
-                            color: Color(0xFF00D9FF),
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.5),
+                          color: Color(0xFF00D9FF),
+                          fontSize: 14.5,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.copy_rounded,
-                          color: Color(0xFF00D9FF), size: 18),
+                      icon: const Icon(
+                        Icons.copy_rounded,
+                        color: Color(0xFF00D9FF),
+                        size: 18,
+                      ),
                       tooltip: 'Copy Manual URL',
                       onPressed: () {
                         final urlToCopy = _manualUrl ?? _qrUri;

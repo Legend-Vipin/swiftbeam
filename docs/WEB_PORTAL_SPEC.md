@@ -59,8 +59,9 @@ http://<IP>:<PORT>/download?data=<BASE64_METADATA>
 
 ## Web App Features & Standalone Tooling
 
-- **📤 Send Mode**: Drag & drop or browse multiple files to stream directly into the host device's storage.
-- **📥 Receive Mode**: Itemized multi-file download portal with "Download All" and individual file stream links.
-- **📡 Pairing Dashboard**: Live network IP, Wi-Fi Direct, and Bluetooth proximity status.
+- **⚡ Simultaneous Bidirectional Transfer**: Web browsers can upload files to the host device while downloading shared files simultaneously from the same web portal page.
+- **📤 Send Mode**: Drag & drop or browse multiple files to stream directly into the host device's storage (`_outputDir`).
+- **📥 Receive Mode**: Itemized multi-file download portal with live 3-second auto-polling (`/meta`), "Download All", and individual file stream links.
+- **📡 Pairing Dashboard**: Live network IP, Wi-Fi Direct (P2P), and Bluetooth proximity status with automatic Wi-Fi fallback.
 - **🛠️ Standalone Python Web Portal**: Run `python3 tools/web_portal.py` for headless or desktop browser testing without launching the full Flutter UI.
 

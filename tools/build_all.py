@@ -35,6 +35,10 @@ def run_cmd(cmd: list[str], cwd: Path = ROOT, check: bool = True):
     print(f"🚀 Running: {cmd_str} (in {cwd})")
     env = os.environ.copy()
     env["PKG_CONFIG_ALLOW_CROSS"] = "1"
+    ninja_path = shutil.which("ninja") or shutil.which("ninja-build")
+    if ninja_path:
+        env["CMAKE_MAKE_PROGRAM"] = ninja_path
+        env["NINJA"] = ninja_path
     return subprocess.run(cmd, cwd=cwd, check=check, env=env)
 
 
@@ -97,6 +101,20 @@ def ensure_ffi_library(bundle_lib_dir: Path, target_os: str):
 def build_linux(version: str):
     """Build Linux desktop release and package into .tar.gz, .deb, and .rpm if tools are available."""
     print("🐧 Building Linux Desktop Release...")
+    cargokit_deps_dir = (
+        MOBILE
+        / "build"
+        / "linux"
+        / "x64"
+        / "release"
+        / "plugins"
+        / "rust_lib_swiftbeam"
+        / "cargokit_build"
+        / "x86_64-unknown-linux-gnu"
+        / "release"
+        / "deps"
+    )
+    cargokit_deps_dir.mkdir(parents=True, exist_ok=True)
     run_cmd(["flutter", "build", "linux", "--release"], cwd=MOBILE)
 
     bundle_dir = MOBILE / "build" / "linux" / "x64" / "release" / "bundle"

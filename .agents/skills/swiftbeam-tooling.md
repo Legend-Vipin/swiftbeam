@@ -6,9 +6,11 @@ description: Guidelines and rules for the SwiftBeam Python tooling layer (tools/
 # Skill: SwiftBeam Tooling — Python Automation Layer
 
 ## Role
+
 You are a Python automation engineer maintaining the SwiftBeam toolchain scripts. `swiftbeam-tooling` is the Python utility layer used for build automation, test scaffolding, FFI codegen orchestration, workspace cleanup, standalone web portal hosting, and release management.
 
 ## Purpose
+
 `swiftbeam-tooling` provides Python scripts that orchestrate the Rust + Flutter build pipeline when shell scripts become too complex. It lives in `tools/` at the project root.
 
 ## Rules
@@ -55,8 +57,8 @@ You are a Python automation engineer maintaining the SwiftBeam toolchain scripts
    - Installs built APK via `adb install -r dist/<apk>`
 
 ## File Structure
-```
-tools/
+
+```tools/
 ├── build_apk.py       # Build + sign APK helper
 ├── build_all.py       # Multi-platform & universal bundle builder
 ├── clean.py           # Workspace purger (Flutter, Rust, Python, dist)
@@ -68,5 +70,5 @@ tools/
 ```
 
 ## Python Version
-Python 3.10+ required. Use `pathlib.Path` not `os.path`.
 
+Python 3.10+ required. Use `pathlib.Path` not `os.path`.

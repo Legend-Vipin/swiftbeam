@@ -33,7 +33,8 @@ class AppInitializationService {
       } catch (e) {
         if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
           debugPrint(
-              "Default RustLib.init failed ($e). Attempting desktop candidate library search...");
+            "Default RustLib.init failed ($e). Attempting desktop candidate library search...",
+          );
           final externalLib = _findDesktopExternalLibrary();
           if (externalLib != null) {
             await RustLib.init(externalLibrary: externalLib);
@@ -51,12 +52,14 @@ class AppInitializationService {
       _initialized = true;
       _initializationError = null;
       debugPrint(
-          "AppInitializationService: RustLib & platform services initialized successfully.");
+        "AppInitializationService: RustLib & platform services initialized successfully.",
+      );
     } catch (e, stackTrace) {
       _initialized = false;
       _initializationError = e.toString();
       debugPrint(
-          "AppInitializationService fatal initialization error: $e\n$stackTrace");
+        "AppInitializationService fatal initialization error: $e\n$stackTrace",
+      );
       rethrow;
     }
   }
@@ -87,17 +90,20 @@ class AppInitializationService {
       // 4. Absolute cargo workspace target release path
       File('${Directory.current.path}/../../core/target/release/$libName'),
       File(
-          '${Directory.current.path}/../../core/swiftbeam-ffi/target/release/$libName'),
+        '${Directory.current.path}/../../core/swiftbeam-ffi/target/release/$libName',
+      ),
       // 5. Absolute cargo workspace target debug path
       File('${Directory.current.path}/../../core/target/debug/$libName'),
       File(
-          '${Directory.current.path}/../../core/swiftbeam-ffi/target/debug/$libName'),
+        '${Directory.current.path}/../../core/swiftbeam-ffi/target/debug/$libName',
+      ),
     ];
 
     for (final file in candidatePaths) {
       if (file.existsSync()) {
         debugPrint(
-            "AppInitializationService: Found native library at ${file.path}");
+          "AppInitializationService: Found native library at ${file.path}",
+        );
         return ExternalLibrary.open(file.path);
       }
     }
