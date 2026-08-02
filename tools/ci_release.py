@@ -403,15 +403,28 @@ def run_release(args) -> bool:
         print(f"📈 Bumping version: {current_version} -> {target_version}")
         set_app_version(target_version)
     elif args.version:
-        target_version = args.version.lstrip("v")
-        print(f"📌 Setting explicit version: {current_version} -> {target_version}")
-        set_app_version(target_version)
+        clean_ver = args.version
+        if clean_ver.startswith("refs/tags/"):
+            clean_ver = clean_ver[len("refs/tags/"):]
+        elif clean_ver.startswith("refs/heads/"):
+            clean_ver = current_version
+
+        if clean_ver.startswith("v") and len(clean_ver) > 1 and clean_ver[1].isdigit():
+            clean_ver = clean_ver[1:]
+
+        if not re.match(r"^\d+\.\d+\.\d+", clean_ver):
+            print(f"⚠️  Invalid version format '{args.version}'. Keeping current app version '{current_version}'.")
+            target_version = current_version
+        else:
+            target_version = clean_ver
+            print(f"📌 Setting explicit version: {current_version} -> {target_version}")
+            set_app_version(target_version)
     else:
         print(f"📦 Using current app version: v{target_version}")
 
     tag_name = f"v{target_version}"
 
-    if args.tag or args.create_tag:
+    if args.tag:
         print(f"🏷️  Creating local git tag `{tag_name}`...")
         tag_cmd = run_command(["git", "tag", "-a", tag_name, "-m", f"Release {tag_name}"])
         if tag_cmd.returncode == 0:

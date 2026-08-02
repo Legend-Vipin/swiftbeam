@@ -75,7 +75,13 @@ jobs:
 
       - name: Run Release via Python Tooling Layer
         run: |
-          python3 tools/release.py --version "${GITHUB_REF#refs/tags/}" --skip-ci
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG_VER="${{ github.ref_name }}"
+            TAG_VER="${TAG_VER#v}"
+            python3 tools/release.py --version "$TAG_VER" --skip-ci
+          else
+            python3 tools/release.py --skip-ci
+          fi
 
       - name: Publish GitHub Release & Upload Assets
         uses: softprops/action-gh-release@v2
